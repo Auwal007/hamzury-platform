@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f8f3eb">
+  <title>desk | hamzury holding</title>
+  <link rel="icon" href="/favicon.ico" type="image/png">
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/proposal.js"></script>
+  <script defer src="/static/desk.js"></script>
+</head>
+<body>
+  <div class="login" id="loginView" hidden>
+    <form class="card" id="loginForm">
+      <img src="/static/img/hamzury.png" alt="hamzury.com" width="150" height="26">
+      <h1>staff desk</h1>
+      <p class="muted">sign in with your own staff account.</p>
+      <div class="field mt-24"><label for="lu">username</label><input id="lu" autocomplete="username" required></div>
+      <div class="field"><label for="lp">password</label><input id="lp" type="password" autocomplete="current-password" required></div>
+      <div class="field"><label for="lotp">authenticator code (if enabled)</label><input id="lotp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6"></div>
+      <div class="error" id="le" role="alert" hidden></div>
+      <button class="btn btn-primary btn-block mt-8" id="lb">sign in</button>
+      <p class="tiny muted mt-16"><a href="/">back to the website</a></p>
+    </form>
+  </div>
+
+  <div class="desk" id="deskView" hidden>
+    <aside class="side" id="side">
+      <img src="/static/img/hamzury.png" alt="hamzury.com" width="140" height="24">
+      <nav aria-label="desk">
+        <button data-nav="overview" class="on"><span>today</span></button>
+        <button data-nav="followups" data-holding><span>follow-ups</span><span class="count" id="cFollow"></span></button>
+        <button data-nav="clients" data-holding><span>clients</span><span class="count" id="cNew"></span></button>
+        <button data-nav="payments" data-money hidden><span>payments</span><span class="count" id="cPay"></span></button>
+        <button data-nav="delivery"><span>delivery</span><span class="count" id="cWork"></span></button>
+        <button data-nav="ventures" data-holding><span>ventures</span></button>
+        <button data-nav="catalogue"><span>catalogue</span></button>
+        <button data-nav="insights" data-holding><span>insights</span></button>
+        <button data-nav="kit" data-holding><span>whatsapp kit</span></button>
+        <button data-nav="team" data-holding><span>team</span></button>
+        <button data-nav="money" data-money hidden><span>money settings</span></button>
+        <button data-nav="security"><span>account security</span></button>
+      </nav>
+      <div class="side-foot"><b>our standard</b>review new clients within 48 hours. every update: progress, blocker, next step.<p class="mt-12"><a href="/">public website</a></p></div>
+    </aside>
+    <div class="desk-main">
+      <header class="desk-bar">
+        <button class="sbtn menu-btn" id="menuBtn" type="button">menu</button>
+        <span class="who" id="who"></span>
+        <button class="sbtn" id="logout" type="button">sign out</button>
+      </header>
+      <main class="desk-body" id="main"></main>
+    </div>
+  </div>
+  <div class="modal" id="modal" hidden><div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="mTitle"><h2 id="mTitle"></h2><div id="mBody"></div></div></div>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

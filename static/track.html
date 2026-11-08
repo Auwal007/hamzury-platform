@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f8f3eb">
+  <meta name="robots" content="noindex,nofollow">
+  <title>my hamzury | track your progress</title>
+  <link rel="icon" href="/favicon.ico" type="image/png">
+  <link rel="apple-touch-icon" href="/static/img/icon-192.png">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/proposal.js"></script>
+  <script defer src="/static/track.js"></script>
+</head>
+<body>
+  <div class="rule" aria-hidden="true"></div>
+  <header class="app-top" id="appTop">
+    <div class="narrow app-top-in">
+      <span id="topLeft"><a href="/" aria-label="hamzury home"><img src="/static/img/hamzury.png" alt="hamzury.com" width="128" height="22"></a></span>
+      <span id="topRight"></span>
+    </div>
+  </header>
+  <main class="narrow screen" id="app" aria-live="polite">
+    <div class="center"><div class="spinner"></div><p class="muted">opening your dashboard...</p></div>
+  </main>
+  <div class="cart slip" id="cart" aria-live="polite">
+    <div class="narrow">
+      <ul class="slip-list" id="slipList" aria-label="your slip"></ul>
+      <div class="slip-bar">
+        <button class="slip-btn" type="button" id="slipBtn" aria-expanded="false" aria-controls="slipList"><small id="cartCount">0 in your slip</small><strong id="cartTotal">&#8358;0</strong></button>
+        <button class="btn btn-primary" type="button" id="cartBtn">activate my roadmap</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

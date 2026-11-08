@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f8f3eb">
+  <title>start here | hamzury</title>
+  <link rel="icon" href="/favicon.ico" type="image/png">
+  <link rel="apple-touch-icon" href="/static/img/icon-192.png">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/start.js"></script>
+</head>
+<body>
+  <div class="flow">
+    <div class="flow-top">
+      <div class="rule" aria-hidden="true"></div>
+      <div class="narrow flow-top-in">
+        <button class="back" type="button" id="backBtn">back</button>
+        <a href="/" aria-label="hamzury home"><img src="/static/img/hamzury.png" alt="hamzury.com" width="128" height="22"></a>
+        <span class="flow-right"><span class="q-count" id="count" aria-live="polite"></span><a class="exit" href="/" aria-label="leave start here and go home">&times;</a></span>
+      </div>
+      <div class="narrow"><div class="progress" aria-hidden="true"><i id="bar"></i></div></div>
+    </div>
+
+    <main class="flow-body">
+      <div class="narrow" id="screen" aria-live="polite"></div>
+      <noscript><div class="narrow note">this page needs javascript. you can also write to desk@hamzury.com.</div></noscript>
+    </main>
+
+    <div class="flow-bottom" id="bottom" hidden>
+      <div class="narrow"><button class="btn btn-primary" type="button" id="nextBtn">continue</button></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+services:
+  hamzury:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env
+    environment:
+      HAMZURY_DB: /app/data/hamzury.sqlite3
+      HAMZURY_FORWARDED_ALLOW_IPS: '*'
+    volumes:
+      - hamzury_data:/app/data
+      - clamav_data:/var/lib/clamav
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  hamzury_data:
+    name: hamzury_data
+  clamav_data:
