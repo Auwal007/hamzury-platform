@@ -36,6 +36,23 @@
     if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : 'something went wrong. please try again.');
     return d;
   }
+  // files go straight to private storage with a one-time signature, then the server checks them. without one, they are posted here.
+  async function upload(path, file) {
+    const ask = async body => {
+      const form = body instanceof FormData;
+      const r = await fetch(path, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-Token': csrf, ...(form ? {} : { 'Content-Type': 'application/json' }) }, body: form ? body : JSON.stringify(body) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : 'upload failed. please try again.');
+      return d;
+    };
+    const s = await ask({ upload: 'sign', name: file.name, size: file.size });
+    const fd = new FormData();
+    if (s.direct) { fd.append('file', file); return ask(fd); }
+    Object.entries(s.fields).forEach(([k, v]) => fd.append(k, v)); fd.append('file', file);
+    const up = await fetch(s.url, { method: 'POST', body: fd });
+    if (!up.ok) throw new Error('upload failed. please try again.');
+    return ask({ upload: 'done', name: file.name, ticket: s.ticket });
+  }
   function toast(m) { const t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, Math.min(6000, 1800 + m.length * 35)); }
   const items = () => (me && me.recommendation ? me.recommendation.items : []);
   const item = id => items().find(x => x.id === Number(id));
@@ -637,11 +654,8 @@
       const k = inp.dataset.file, box = $('upl' + k), nm = box.querySelector('.upl-name');
       if (f.size > 25 * 1024 * 1024) { toast('that file is larger than 25 mb.'); inp.value = ''; return; }
       nm.textContent = 'uploading ' + f.name + '...'; box.classList.remove('done');
-      const fd = new FormData(); fd.append('file', f);
       try {
-        const r = await fetch(`/api/client/engagements/${x.engagement.id}/attachment?q=${k}`, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-Token': csrf }, body: fd });
-        const d = await r.json().catch(() => ({}));
-        if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : 'upload failed. please try again.');
+        const d = await upload(`/api/client/engagements/${x.engagement.id}/attachment?q=${k}`, f);
         x.engagement.attachments = { ...(x.engagement.attachments || {}), [k]: d.name };
         nm.innerHTML = '&#10003; ' + esc(d.name); box.classList.add('done'); box.querySelector('.upl-btn').textContent = 'replace'; $('obErr').hidden = true;
       } catch (ex) { nm.textContent = String(ex.message).toLowerCase(); }

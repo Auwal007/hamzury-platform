@@ -1,0 +1,50 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "node tools/build.js",
+  "outputDirectory": "public",
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "functions": {
+    "api/index.js": { "maxDuration": 60, "memory": 1024, "includeFiles": "{lib/schema.sql,lib/catalogue-data.json}" }
+  },
+  "crons": [{ "path": "/api/cron/daily", "schedule": "0 6 * * *" }],
+  "redirects": [
+    { "source": "/visit/abuja", "destination": "https://www.google.com/maps/search/?api=1&query=9.028329%2C7.478382", "permanent": false },
+    { "source": "/visit/jos", "destination": "https://www.google.com/maps/place/hamzury+innovation+hub/@9.9303296,8.8896841,17z/data=!3m1!4b1!4m6!3m5!1s0x1053738fbdc0e88f:0x1d70274660173290!8m2!3d9.9303296!4d8.892259", "permanent": false },
+    { "source": "/visit/:office", "destination": "/visit", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index?__p=/api/:path*" },
+    { "source": "/pay/callback", "destination": "/api/index?__p=/pay/callback" },
+    { "source": "/", "destination": "/static/index.html" },
+    { "source": "/start", "destination": "/static/start.html" },
+    { "source": "/track", "destination": "/static/track.html" },
+    { "source": "/admin", "destination": "/static/admin.html" },
+    { "source": "/privacy", "destination": "/static/privacy.html" },
+    { "source": "/terms", "destination": "/static/terms.html" },
+    { "source": "/visit", "destination": "/static/visit.html" },
+    { "source": "/library", "destination": "/static/library.html" },
+    { "source": "/library/profile", "destination": "/static/profile.html" },
+    { "source": "/gallery", "destination": "/static/gallery.html" },
+    { "source": "/v/:v(bizdoc|medialy|subt|iotics|hub|iwiin)", "destination": "/static/venture.html" },
+    { "source": "/favicon.ico", "destination": "/static/img/hamzury-mark.png" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
+        { "key": "Cache-Control", "value": "public, max-age=300" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; img-src 'self' data: blob:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self' https://api.cloudinary.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://checkout.paystack.com" }
+      ]
+    },
+    { "source": "/(api|pay)/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] },
+    { "source": "/(admin|track)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] },
+    { "source": "/static/(admin|track).html", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+  ]
+}

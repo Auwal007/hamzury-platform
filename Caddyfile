@@ -1,6 +1,0 @@
-{$HAMZURY_DOMAIN} {
-    request_body {
-        max_size 27262976
-    }
-    reverse_proxy 127.0.0.1:8000
-}

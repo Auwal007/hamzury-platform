@@ -44,6 +44,16 @@
     if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : (Array.isArray(d.detail) ? d.detail.map(x => (x.loc || []).slice(-1)[0] + ': ' + x.msg).join('; ') : 'request failed'));
     return d;
   }
+  // files go straight to private storage with a one-time signature, then the server checks them. without one, they are posted here.
+  async function upload(path, file) {
+    const s = await api(path, { method: 'POST', body: { upload: 'sign', name: file.name, size: file.size } });
+    const fd = new FormData();
+    if (s.direct) { fd.append('file', file); return api(path, { method: 'POST', body: fd }); }
+    Object.entries(s.fields).forEach(([k, v]) => fd.append(k, v)); fd.append('file', file);
+    const up = await fetch(s.url, { method: 'POST', body: fd });
+    if (!up.ok) throw new Error('upload failed. please try again.');
+    return api(path, { method: 'POST', body: { upload: 'done', name: file.name, ticket: s.ticket } });
+  }
   function toast(m, bad) { const t = $('toast'); t.textContent = m; t.hidden = false; t.style.background = bad ? '#8e2a20' : ''; clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 4200); }
   const holding = () => me && ['holding_owner', 'holding_admin'].includes(me.role);
   let UPDATE_EVERY = 48;
@@ -462,8 +472,8 @@
   }
   function bindFiles(list) {
     main().querySelectorAll('[data-file]').forEach(inp => inp.addEventListener('change', async () => {
-      if (!inp.files[0]) return; const fd = new FormData(); fd.append('file', inp.files[0]);
-      try { await api(`/api/admin/engagements/${inp.dataset.file}/file`, { method: 'POST', body: fd }); toast('file uploaded. the client cannot see it until holding delivers.'); deliveryView(); } catch (ex) { toast(ex.message, true); }
+      if (!inp.files[0]) return;
+      try { await upload(`/api/admin/engagements/${inp.dataset.file}/file`, inp.files[0]); toast('file uploaded. the client cannot see it until holding delivers.'); deliveryView(); } catch (ex) { toast(ex.message, true); }
     }));
   }
   function bindOnb(list) {

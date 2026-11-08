@@ -9,16 +9,16 @@
 - [ ] Register and secure the domain; enforce HTTPS and secure cookies; deploy behind reverse proxy/WAF.
 - [x] Implement staff authenticator enrollment/login, password changes, owner-managed resets, operator recovery and session revocation. Production requires MFA enrollment before staff access client/payment records.
 - [ ] Enroll the actual staff, verify operator recovery on the host and define owner offboarding responsibilities.
-- [x] Persist authentication/form rate limits in SQLite so they survive app restarts and apply across workers sharing this disk.
+- [x] Persist authentication/form rate limits in the database so they survive restarts and apply across every serverless instance.
 - [ ] Configure proxy-level limits and complete an application security review for the actual exposure and workload.
 - [ ] For any sensitive proposal, acceptance, contract or data request, require client identity verification. Bearer URLs alone do not meet this standard.
-- [x] Add content validation, unsafe archive rejection, request-size limits and fail-closed ClamAV scanning for production uploads.
+- [x] Add content validation, unsafe archive rejection, request-size limits and fail-closed scanning (through `HAMZURY_UPLOAD_SCAN_URL`) for production uploads.
+- [ ] Choose and connect the upload scanning service. Production refuses uploads until it answers.
 - [ ] Verify scanner signatures, host disk protection and suitable identity verification before requesting sensitive documents. A malware scan alone does not complete this review.
 - [ ] Authorise prices, tax treatment, third-party fees, scope templates, refund rules, contract terms and payment confirmation authorities.
 - [ ] Clarify venture and holding roles for approval, QA, delivery, client complaints and compliance escalation.
 - [ ] Define delivery acceptance separately from holding QA completion; keep verifiable audit evidence.
-- [x] Implement age-encrypted backup support, coordinated file snapshots, atomic archive publication and a restore tool that verifies SQLite integrity.
-- [ ] Configure the backup recipient, off-server copies and a production restore drill. Keep the age private identity and application secret securely recoverable. Use the documented separate-volume rollback process; plan a database migration before scaling beyond one node.
+- [ ] Turn on Supabase backups (Pro) or schedule your own encrypted `pg_dump` copies, and complete a restore drill into a separate project. Keep `HAMZURY_SECRET` securely recoverable: it decrypts staff authenticator secrets.
 - [ ] Set up error monitoring, audit review, log retention, update procedures and accessibility testing.
 - [ ] Choose how WhatsApp links are delivered: manual in MVP; consent-aware official API integration may follow later.
 - [ ] Configure an official public contact/WhatsApp number; current public site does not invent one.

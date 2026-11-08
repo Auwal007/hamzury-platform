@@ -1,0 +1,2258 @@
+[
+ {
+  "code": "BZ-01",
+  "name": "cac business name registration",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "a registered business identity that customers and institutions can verify.",
+  "inclusions": [
+   "review of your details",
+   "name availability and application",
+   "preparation and submission",
+   "handover of issued records"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 3000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "cac-registration",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "three name options, in order of preference",
+    "kind": "long",
+    "why": "a name can be refused if it is taken, so we check all three in order."
+   },
+   {
+    "label": "what will the business do?",
+    "kind": "long",
+    "why": "the registration needs a clear description of your business activity."
+   },
+   {
+    "label": "a valid id for each owner or director (nin slip, passport or driver's licence)",
+    "kind": "file",
+    "why": "the registry asks for proof of identity for every owner."
+   },
+   {
+    "label": "a passport photograph of each owner",
+    "kind": "file",
+    "why": "the application asks for one for every owner."
+   }
+  ],
+  "focus": "registering your business properly"
+ },
+ {
+  "code": "BZ-02",
+  "name": "cac limited company registration",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "a company structure that fits your ownership and plans.",
+  "inclusions": [
+   "review of ownership and director details",
+   "one company application",
+   "submission support",
+   "handover of issued documents"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "cac-registration",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "two company name options",
+    "kind": "long",
+    "why": "a name can be refused if it is taken."
+   },
+   {
+    "label": "directors, shareholders and how shares are split",
+    "kind": "long",
+    "why": "the company is registered with these exact owners and shares."
+   },
+   {
+    "label": "a valid id for each owner or director (nin slip, passport or driver's licence)",
+    "kind": "file",
+    "why": "the registry asks for proof of identity for every owner."
+   },
+   {
+    "label": "company address",
+    "kind": "text",
+    "why": "every company must have a registered address."
+   }
+  ],
+  "focus": "registering your company properly"
+ },
+ {
+  "code": "BZ-16",
+  "name": "cac incorporated trustees (ngo) registration",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "a registered identity for your ngo, foundation or association.",
+  "inclusions": [
+   "review of trustees and objectives",
+   "name application",
+   "constitution guidance",
+   "submission and follow-up",
+   "handover of issued records"
+  ],
+  "exclusions": [],
+  "duration": "30 days",
+  "price_minor": 7000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate. newspaper publication, where required, is separate.",
+  "format": "file",
+  "group": "cac-registration",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "a valid id for each owner or director (nin slip, passport or driver's licence)",
+    "kind": "file",
+    "why": "the registry asks for proof of identity for every owner."
+   },
+   {
+    "label": "names of at least two trustees and the aims of the organisation",
+    "kind": "long",
+    "why": "the registration lists the trustees and what the organisation exists to do."
+   }
+  ],
+  "focus": "registering your organisation properly"
+ },
+ {
+  "code": "BZ-03",
+  "name": "tax identification (tin) support",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "the tax identification your business needs for banks, contracts and payments.",
+  "inclusions": [
+   "check of your existing status",
+   "application or correction support",
+   "handover of available documents"
+  ],
+  "exclusions": [
+   "a second registration if you already have a tin"
+  ],
+  "duration": "14 days",
+  "price_minor": 1500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   }
+  ],
+  "focus": "your tax identification"
+ },
+ {
+  "code": "BZ-04",
+  "name": "banking board resolution",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "a clear record of who may operate the company bank account.",
+  "inclusions": [
+   "one resolution",
+   "authorised signatories",
+   "matched to your bank’s requirements"
+  ],
+  "exclusions": [],
+  "duration": "2 days",
+  "price_minor": 1000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [
+   "BZ-02"
+  ],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "the bank and the authorised signatories",
+    "kind": "long",
+    "why": "the resolution must match the bank’s form and the people who will sign."
+   }
+  ],
+  "focus": "a board resolution for your bank"
+ },
+ {
+  "code": "BZ-05",
+  "name": "scuml assistance: applicable businesses",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "help preparing and submitting your scuml application for compliance and banking.",
+  "inclusions": [
+   "applicability check",
+   "requirements review",
+   "application assistance",
+   "submission record and follow-up"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "approved",
+  "external": "scuml registration itself is free. this is bizdoc’s professional assistance fee. certificate issuance is by scuml.",
+  "format": "file",
+  "group": "scuml",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   },
+   {
+    "label": "a valid id for each owner or director (nin slip, passport or driver's licence)",
+    "kind": "file",
+    "why": "the registry asks for proof of identity for every owner."
+   }
+  ],
+  "focus": "checking your scuml obligations"
+ },
+ {
+  "code": "BZ-06",
+  "name": "scuml assistance: mining, oil and gas",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "your scuml application prepared for the checks your sector faces.",
+  "inclusions": [
+   "activity and requirements review",
+   "application assistance",
+   "follow-up"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 10000000,
+  "basis": "fixed",
+  "status": "approved",
+  "external": "scuml registration itself is free. this is bizdoc’s professional assistance fee. certificate issuance is by scuml.",
+  "format": "file",
+  "group": "scuml",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   },
+   {
+    "label": "a valid id for each owner or director (nin slip, passport or driver's licence)",
+    "kind": "file",
+    "why": "the registry asks for proof of identity for every owner."
+   }
+  ],
+  "focus": "scuml and the approvals your sector needs"
+ },
+ {
+  "code": "BZ-07",
+  "name": "scuml assistance: ngos, foundations and organisations",
+  "owner": "bizdoc",
+  "level": "minimum",
+  "value": "your organisation’s scuml application prepared and submitted.",
+  "inclusions": [
+   "applicability review",
+   "organisational document checks",
+   "application assistance",
+   "follow-up"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "approved",
+  "external": "scuml registration itself is free. this is bizdoc’s professional assistance fee. certificate issuance is by scuml.",
+  "format": "file",
+  "group": "scuml",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   },
+   {
+    "label": "a valid id for each owner or director (nin slip, passport or driver's licence)",
+    "kind": "file",
+    "why": "the registry asks for proof of identity for every owner."
+   }
+  ],
+  "focus": "scuml for your organisation"
+ },
+ {
+  "code": "MD-01",
+  "name": "simple brand kit",
+  "owner": "medialy",
+  "level": "minimum",
+  "value": "one consistent identity across your documents and customer channels.",
+  "inclusions": [
+   "two logo directions",
+   "one final logo",
+   "colours and fonts",
+   "letterhead",
+   "profile image",
+   "short usage guide",
+   "two revision rounds"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 7000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "folder",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [
+   {
+    "label": "your business name and what it does, in one line",
+    "kind": "text",
+    "why": "the logo and colours must fit what you sell and who you sell to."
+   },
+   {
+    "label": "any logo you use now",
+    "kind": "file",
+    "required": false,
+    "why": "we keep what customers already recognise."
+   }
+  ],
+  "focus": "a brand customers recognise"
+ },
+ {
+  "code": "MD-02",
+  "name": "starter company profile",
+  "owner": "medialy",
+  "level": "minimum",
+  "value": "a clear profile that explains your business to customers and partners.",
+  "inclusions": [
+   "up to six pages",
+   "services, audience and contacts",
+   "verified capabilities only",
+   "pdf and editable source"
+  ],
+  "exclusions": [
+   "printing and physical materials are separate."
+  ],
+  "duration": "7 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "a profile that explains your business"
+ },
+ {
+  "code": "MD-03",
+  "name": "service menu or offer sheet",
+  "owner": "medialy",
+  "level": "minimum",
+  "value": "customers see exactly what they can buy and how to order.",
+  "inclusions": [
+   "one sheet, up to eight offers",
+   "inclusions and exclusions",
+   "ordering instructions"
+  ],
+  "exclusions": [],
+  "duration": "3 days",
+  "price_minor": 1500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "a clear offer customers can read"
+ },
+ {
+  "code": "MD-04",
+  "name": "customer communication starter kit",
+  "owner": "medialy",
+  "level": "minimum",
+  "value": "consistent replies that guide every customer to a clear next step.",
+  "inclusions": [
+   "up to ten approved replies",
+   "enquiries, quotes, payments, progress and follow-up"
+  ],
+  "exclusions": [],
+  "duration": "3 days",
+  "price_minor": 2000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "clear replies for every customer question"
+ },
+ {
+  "code": "ST-01",
+  "name": "whatsapp business setup",
+  "owner": "subt",
+  "level": "minimum",
+  "value": "your whatsapp becomes an organised place for enquiries.",
+  "inclusions": [
+   "profile and hours",
+   "up to ten catalogue entries",
+   "labels",
+   "greeting and away messages",
+   "up to six supplied quick replies"
+  ],
+  "exclusions": [],
+  "duration": "3 days",
+  "price_minor": 2500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "an organised whatsapp for enquiries"
+ },
+ {
+  "code": "ST-02",
+  "name": "google business profile setup",
+  "owner": "subt",
+  "level": "minimum",
+  "value": "customers find accurate information about you on google.",
+  "inclusions": [
+   "eligibility review",
+   "profile, categories, contacts and services",
+   "verification assistance"
+  ],
+  "exclusions": [],
+  "duration": "3 days",
+  "price_minor": 1500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "google’s own verification can take longer and is outside our control.",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "being found on google"
+ },
+ {
+  "code": "ST-03",
+  "name": "business folder and access setup",
+  "owner": "subt",
+  "level": "minimum",
+  "value": "organised files and clear account ownership from day one.",
+  "inclusions": [
+   "folder structure",
+   "naming rules",
+   "access permissions",
+   "account register"
+  ],
+  "exclusions": [],
+  "duration": "3 days",
+  "price_minor": 1500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "folder",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "organised files and access"
+ },
+ {
+  "code": "ST-04",
+  "name": "starter business tracker",
+  "owner": "subt",
+  "level": "minimum",
+  "value": "enquiries, income, expenses and unpaid balances in one simple place.",
+  "inclusions": [
+   "editable workbook",
+   "agreed fields",
+   "basic summary",
+   "sample entries"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 2000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workbook",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "keeping every order and payment in one place"
+ },
+ {
+  "code": "ST-05",
+  "name": "business email setup",
+  "owner": "subt",
+  "level": "minimum",
+  "value": "a professional email on your own domain.",
+  "inclusions": [
+   "up to three mailboxes",
+   "basic signatures",
+   "access handover"
+  ],
+  "exclusions": [
+   "domains, hosting, paid software and subscriptions are separate."
+  ],
+  "duration": "3 days",
+  "price_minor": 2000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "a professional email"
+ },
+ {
+  "code": "HB-01",
+  "name": "owner quick-start training",
+  "owner": "hub",
+  "level": "minimum",
+  "value": "use your new tools confidently in everyday work.",
+  "inclusions": [
+   "one remote session up to 90 minutes",
+   "up to three people",
+   "quick-start checklist"
+  ],
+  "exclusions": [],
+  "duration": "one session",
+  "price_minor": 2000000,
+  "basis": "session",
+  "status": "proposed",
+  "external": "",
+  "format": "guide",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "training you can use the next day"
+ },
+ {
+  "code": "HH-01",
+  "name": "business model and direction blueprint",
+  "owner": "holding",
+  "level": "standard",
+  "value": "know how your business earns, what it costs and what to do next.",
+  "inclusions": [
+   "one discovery session",
+   "customer and problem summary",
+   "revenue model and key costs",
+   "priorities",
+   "90-day roadmap"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "a clear direction for the next 90 days"
+ },
+ {
+  "code": "HH-02",
+  "name": "organisational structure and role kit",
+  "owner": "holding",
+  "level": "standard",
+  "value": "clear responsibilities, so work never depends on guesswork.",
+  "inclusions": [
+   "organisation chart",
+   "up to six role descriptions",
+   "reporting lines and decision rights"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "clear roles for your team"
+ },
+ {
+  "code": "HH-03",
+  "name": "core sop handbook",
+  "owner": "holding",
+  "level": "standard",
+  "value": "clear instructions so work is delivered the same way every time.",
+  "inclusions": [
+   "up to six processes",
+   "owner, steps, records and checks for each"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 9000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "written steps your team can follow"
+ },
+ {
+  "code": "HH-04",
+  "name": "business routine and review kit",
+  "owner": "holding",
+  "level": "standard",
+  "value": "daily, weekly and monthly routines that keep the business on track.",
+  "inclusions": [
+   "role checklists",
+   "review agenda",
+   "action log",
+   "up to ten performance measures"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 3000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "simple routines for the team"
+ },
+ {
+  "code": "MD-05",
+  "name": "positioning and offer strategy",
+  "owner": "medialy",
+  "level": "standard",
+  "value": "who you serve, what you offer and why customers should choose you.",
+  "inclusions": [
+   "target audience",
+   "differentiation",
+   "up to three offers",
+   "key messages and sales story"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "a clear reason for customers to choose you"
+ },
+ {
+  "code": "MD-06",
+  "name": "sales process and crm specification",
+  "owner": "medialy",
+  "level": "standard",
+  "value": "every enquiry gets a clear path to a decision.",
+  "inclusions": [
+   "lead stages",
+   "qualification questions",
+   "ownership rules",
+   "follow-up schedule"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "a sales process that follows up"
+ },
+ {
+  "code": "MD-07",
+  "name": "marketing launch kit",
+  "owner": "medialy",
+  "level": "standard",
+  "value": "consistent communication with a clear direction and reusable designs.",
+  "inclusions": [
+   "two social profiles set up",
+   "six post templates",
+   "content themes",
+   "one-month calendar"
+  ],
+  "exclusions": [
+   "ongoing posting"
+  ],
+  "duration": "7 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "folder",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "a consistent social media start"
+ },
+ {
+  "code": "MD-08",
+  "name": "sales proposal template",
+  "owner": "medialy",
+  "level": "standard",
+  "value": "present your offer and price professionally.",
+  "inclusions": [
+   "one reusable proposal up to eight pages",
+   "editable client, scope and pricing sections"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 3500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "BZ-08",
+  "name": "client service agreement",
+  "owner": "bizdoc",
+  "level": "standard",
+  "value": "agreed work, payment terms and responsibilities, written before work begins.",
+  "inclusions": [
+   "one service agreement",
+   "requirements discussion",
+   "one revision"
+  ],
+  "exclusions": [
+   "stamp duty and filing fees"
+  ],
+  "duration": "7 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "complex legal drafting is quoted after review.",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "an agreement that protects your contract"
+ },
+ {
+  "code": "BZ-09",
+  "name": "worker or contractor agreement",
+  "owner": "bizdoc",
+  "level": "standard",
+  "value": "clear expectations for the people who deliver your work.",
+  "inclusions": [
+   "one agreement type for one role",
+   "one revision"
+  ],
+  "exclusions": [
+   "stamp duty and filing fees"
+  ],
+  "duration": "7 days",
+  "price_minor": 3500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "clear terms for the people doing the work"
+ },
+ {
+  "code": "BZ-10",
+  "name": "transaction document kit",
+  "owner": "bizdoc",
+  "level": "standard",
+  "value": "consistent quotes, invoices, receipts and sign-offs.",
+  "inclusions": [
+   "quotation, invoice, receipt and completion templates"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 2500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "clean quotes, invoices and receipts"
+ },
+ {
+  "code": "FN-01",
+  "name": "pricing and costing model",
+  "owner": "finance",
+  "level": "standard",
+  "value": "know what each sale costs and the margin your price needs.",
+  "inclusions": [
+   "costing for up to ten offers",
+   "overhead assumptions",
+   "margin scenarios"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workbook",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "pricing that covers your costs"
+ },
+ {
+  "code": "FN-02",
+  "name": "financial records setup",
+  "owner": "finance",
+  "level": "standard",
+  "value": "one consistent way to record income, expenses and what you are owed.",
+  "inclusions": [
+   "account categories",
+   "record templates",
+   "monthly reporting structure"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workbook",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "records that show where your money goes"
+ },
+ {
+  "code": "FN-03",
+  "name": "budget and cash-flow plan",
+  "owner": "finance",
+  "level": "standard",
+  "value": "plan spending and see tight months before they arrive.",
+  "inclusions": [
+   "twelve-month workbook",
+   "your assumptions",
+   "one review session"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workbook",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "a budget and cash-flow plan"
+ },
+ {
+  "code": "ST-06",
+  "name": "business website",
+  "owner": "subt",
+  "level": "standard",
+  "value": "one clear place for customers to understand you and get in touch.",
+  "inclusions": [
+   "up to five pages",
+   "mobile layout",
+   "one enquiry form",
+   "basic analytics"
+  ],
+  "exclusions": [
+   "domains, hosting, paid software and subscriptions are separate.",
+   "copywriting beyond supplied content"
+  ],
+  "duration": "7 days",
+  "price_minor": 18000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "website",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [
+   {
+    "label": "the pages you want and what each should say",
+    "kind": "long",
+    "why": "we build the pages around your real services."
+   },
+   {
+    "label": "your logo and photos",
+    "kind": "file",
+    "why": "the site uses your own brand and images."
+   }
+  ],
+  "focus": "a website customers can reach you through"
+ },
+ {
+  "code": "ST-07",
+  "name": "crm configuration",
+  "owner": "subt",
+  "level": "standard",
+  "value": "customer details and follow-ups organised in one system.",
+  "inclusions": [
+   "one pipeline on your existing platform",
+   "up to five users",
+   "agreed fields",
+   "import of up to 100 records",
+   "testing"
+  ],
+  "exclusions": [
+   "domains, hosting, paid software and subscriptions are separate."
+  ],
+  "duration": "7 days",
+  "price_minor": 9000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workspace",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "customer details in one system"
+ },
+ {
+  "code": "ST-08",
+  "name": "operations workspace",
+  "owner": "subt",
+  "level": "standard",
+  "value": "tasks, deadlines and approvals visible to the right people.",
+  "inclusions": [
+   "one workflow",
+   "up to five users",
+   "task stages",
+   "notifications"
+  ],
+  "exclusions": [
+   "domains, hosting, paid software and subscriptions are separate."
+  ],
+  "duration": "7 days",
+  "price_minor": 9000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workspace",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "tasks and deadlines everyone can see"
+ },
+ {
+  "code": "ST-09",
+  "name": "business dashboard",
+  "owner": "subt",
+  "level": "standard",
+  "value": "your key numbers without searching through records.",
+  "inclusions": [
+   "one dashboard",
+   "up to eight measures",
+   "two compatible data sources"
+  ],
+  "exclusions": [
+   "bespoke integrations"
+  ],
+  "duration": "7 days",
+  "price_minor": 7500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workspace",
+  "group": "",
+  "requires": [],
+  "overlaps": [
+   "ST-07",
+   "ST-08"
+  ],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "your key numbers in one view"
+ },
+ {
+  "code": "ST-10",
+  "name": "financial tool configuration",
+  "owner": "subt",
+  "level": "standard",
+  "value": "your approved record structure turned into a working tool.",
+  "inclusions": [
+   "one application or workbook on your existing platform",
+   "up to two users",
+   "report testing"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workbook",
+  "group": "",
+  "requires": [],
+  "overlaps": [
+   "FN-02"
+  ],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "HB-02",
+  "name": "team implementation training",
+  "owner": "hub",
+  "level": "standard",
+  "value": "your team uses the new processes and tools the same way.",
+  "inclusions": [
+   "two remote sessions",
+   "up to five people",
+   "exercises and role checklists"
+  ],
+  "exclusions": [],
+  "duration": "within 7 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "guide",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "a team trained on the new way of working"
+ },
+ {
+  "code": "BZ-11",
+  "name": "trademark application support",
+  "owner": "bizdoc",
+  "level": "protection",
+  "value": "practical steps to protect the name and mark customers know you by.",
+  "inclusions": [
+   "requirements review",
+   "search and application for one mark in one class"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate. registry decisions take longer and are outside our control.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "protecting your business name"
+ },
+ {
+  "code": "BZ-12",
+  "name": "agreement review",
+  "owner": "bizdoc",
+  "level": "protection",
+  "value": "find unclear terms before they turn into disputes.",
+  "inclusions": [
+   "review of one agreement up to ten pages",
+   "issue summary",
+   "agreed revisions"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "the agreement to review",
+    "kind": "file",
+    "why": "we review the exact document you will sign."
+   }
+  ],
+  "focus": "checking agreements before you sign"
+ },
+ {
+  "code": "BZ-13",
+  "name": "compliance obligations map",
+  "owner": "bizdoc",
+  "level": "protection",
+  "value": "know every obligation your business must track, and who owns it.",
+  "inclusions": [
+   "review for one entity, activity and location",
+   "obligations register",
+   "evidence list",
+   "review calendar"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   }
+  ],
+  "focus": "knowing exactly which papers and filings apply to you"
+ },
+ {
+  "code": "BZ-17",
+  "name": "nsitf compliance certificate support",
+  "owner": "bizdoc",
+  "level": "protection",
+  "value": "the nsitf certificate many contracts and tenders ask for.",
+  "inclusions": [
+   "requirements check",
+   "application preparation",
+   "submission and follow-up"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   }
+  ],
+  "focus": "contractor compliance papers"
+ },
+ {
+  "code": "BZ-18",
+  "name": "pencom compliance certificate support",
+  "owner": "bizdoc",
+  "level": "protection",
+  "value": "the pencom certificate public and corporate contracts often require.",
+  "inclusions": [
+   "requirements check",
+   "application preparation",
+   "submission and follow-up"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   }
+  ],
+  "focus": "contractor compliance papers"
+ },
+ {
+  "code": "BZ-19",
+  "name": "bpp contractor registration support",
+  "owner": "bizdoc",
+  "level": "protection",
+  "value": "registration that lets you bid for public procurement.",
+  "inclusions": [
+   "requirements check",
+   "document preparation",
+   "portal submission and follow-up"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [
+   "BZ-17",
+   "BZ-18"
+  ],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   },
+   {
+    "label": "your nsitf, pencom and tax documents, if you have them",
+    "kind": "file",
+    "required": false,
+    "why": "registration usually asks for these compliance documents."
+   }
+  ],
+  "focus": "registration to bid for public contracts"
+ },
+ {
+  "code": "HH-05",
+  "name": "risk and approval controls kit",
+  "owner": "holding",
+  "level": "protection",
+  "value": "less confusion around spending, decisions and problems.",
+  "inclusions": [
+   "up to ten priority risks",
+   "approval matrix",
+   "escalation steps",
+   "action register"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "MD-09",
+  "name": "brand and communication controls",
+  "owner": "medialy",
+  "level": "protection",
+  "value": "public communication stays consistent as more people speak for you.",
+  "inclusions": [
+   "brand-use rules",
+   "content approvals",
+   "consent workflow",
+   "complaint-response guidance"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 3000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "ST-11",
+  "name": "access and account security setup",
+  "owner": "subt",
+  "level": "protection",
+  "value": "the right access for each person, with clear ownership and recovery.",
+  "inclusions": [
+   "up to five users across three services",
+   "permissions review",
+   "multifactor setup where supported",
+   "offboarding checklist"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "guide",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "who can access what"
+ },
+ {
+  "code": "ST-12",
+  "name": "backup and recovery setup",
+  "owner": "subt",
+  "level": "protection",
+  "value": "a tested way to recover when files or access are lost.",
+  "inclusions": [
+   "backup for one file store",
+   "retention settings",
+   "one restore test",
+   "recovery guide"
+  ],
+  "exclusions": [
+   "domains, hosting, paid software and subscriptions are separate."
+  ],
+  "duration": "5 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "guide",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "a tested backup of your records"
+ },
+ {
+  "code": "ST-13",
+  "name": "compliance dashboard setup",
+  "owner": "subt",
+  "level": "protection",
+  "value": "deadlines, owners and evidence visible in one place.",
+  "inclusions": [
+   "dashboard for up to ten obligations",
+   "reminders",
+   "evidence links"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "workspace",
+  "group": "",
+  "requires": [
+   "BZ-13"
+  ],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "HB-03",
+  "name": "safeguards training",
+  "owner": "hub",
+  "level": "protection",
+  "value": "your team follows the access, record and escalation rules.",
+  "inclusions": [
+   "one remote session",
+   "up to five people",
+   "scenario checklist"
+  ],
+  "exclusions": [],
+  "duration": "one session",
+  "price_minor": 2500000,
+  "basis": "session",
+  "status": "proposed",
+  "external": "",
+  "format": "guide",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "HH-06",
+  "name": "growth and capacity plan",
+  "owner": "holding",
+  "level": "scaling",
+  "value": "connect your growth goals to the people and processes that deliver them.",
+  "inclusions": [
+   "ninety-day plan",
+   "capacity review",
+   "hiring priorities",
+   "milestones"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 7500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "a growth plan your team can deliver"
+ },
+ {
+  "code": "MD-10",
+  "name": "corporate sales kit",
+  "owner": "medialy",
+  "level": "scaling",
+  "value": "approach larger customers with a credible offer.",
+  "inclusions": [
+   "capability presentation, reusing your profile content",
+   "corporate offer sheet",
+   "outreach sequence"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "MD-11",
+  "name": "advertising campaign setup",
+  "owner": "medialy",
+  "level": "scaling",
+  "value": "one focused campaign with a clear audience, offer and enquiry route.",
+  "inclusions": [
+   "one platform, one campaign",
+   "up to three creative variations from your supplied assets",
+   "tracking setup"
+  ],
+  "exclusions": [
+   "advertising spend is separate."
+  ],
+  "duration": "7 days",
+  "price_minor": 5000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "strategy",
+  "onboarding": [],
+  "focus": "one focused campaign"
+ },
+ {
+  "code": "MD-12",
+  "name": "customer retention programme",
+  "owner": "medialy",
+  "level": "scaling",
+  "value": "happy customers get a clear reason to buy again and refer others.",
+  "inclusions": [
+   "repeat-purchase process",
+   "referral rules",
+   "feedback flow",
+   "up to five message templates"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "reasons for customers to come back"
+ },
+ {
+  "code": "IW-01",
+  "name": "partnership development kit",
+  "owner": "iwiin",
+  "level": "scaling",
+  "value": "find useful partners and approach them with a clear offer.",
+  "inclusions": [
+   "up to ten researched organisations",
+   "fit notes",
+   "one partnership proposal",
+   "outreach tracker"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "no introductions or outcomes are guaranteed.",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "approaching the right partners"
+ },
+ {
+  "code": "IW-02",
+  "name": "opportunity readiness review",
+  "owner": "iwiin",
+  "level": "scaling",
+  "value": "know which gaps to close before you apply for an opportunity.",
+  "inclusions": [
+   "review against one grant, tender or partnership",
+   "action checklist"
+  ],
+  "exclusions": [],
+  "duration": "5 days",
+  "price_minor": 3500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "getting ready for funding the right way"
+ },
+ {
+  "code": "IW-03",
+  "name": "grant or partnership proposal support",
+  "owner": "iwiin",
+  "level": "scaling",
+  "value": "your project presented clearly against the opportunity’s requirements.",
+  "inclusions": [
+   "one application",
+   "narrative",
+   "budget coordination",
+   "one revision"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 8000000,
+  "basis": "from",
+  "status": "proposed",
+  "external": "funding decisions stay with each organisation.",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "a clear application"
+ },
+ {
+  "code": "BZ-14",
+  "name": "industry licence or permit assessment",
+  "owner": "bizdoc",
+  "level": "scaling",
+  "value": "know which approvals your activity needs before you commit.",
+  "inclusions": [
+   "assessment for one activity and location",
+   "document checklist",
+   "application plan"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 4000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "knowing which licences your sector needs"
+ },
+ {
+  "code": "BZ-20",
+  "name": "industry licence or permit application",
+  "owner": "bizdoc",
+  "level": "scaling",
+  "value": "the approval your activity needs, applied for properly.",
+  "inclusions": [
+   "application preparation",
+   "submission",
+   "follow-up with the agency"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 0,
+  "basis": "quote",
+  "status": "proposed",
+  "external": "government and statutory fees are separate. each licence is quoted after assessment.",
+  "format": "file",
+  "group": "",
+  "requires": [
+   "BZ-14"
+  ],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [],
+  "focus": "applying for your licence"
+ },
+ {
+  "code": "ST-14",
+  "name": "workflow automation",
+  "owner": "subt",
+  "level": "scaling",
+  "value": "fewer repeated manual steps in one approved process.",
+  "inclusions": [
+   "one workflow up to five steps",
+   "two compatible applications",
+   "testing and failure alerts"
+  ],
+  "exclusions": [
+   "domains, hosting, paid software and subscriptions are separate."
+  ],
+  "duration": "7 days",
+  "price_minor": 7500000,
+  "basis": "workflow",
+  "status": "proposed",
+  "external": "",
+  "format": "workspace",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "taking repeated work off your hands"
+ },
+ {
+  "code": "ST-15",
+  "name": "online store setup",
+  "owner": "subt",
+  "level": "scaling",
+  "value": "customers browse, order and pay online.",
+  "inclusions": [
+   "template-based store",
+   "up to 30 products",
+   "one payment gateway",
+   "basic delivery rules"
+  ],
+  "exclusions": [
+   "domains, hosting, paid software and subscriptions are separate."
+  ],
+  "duration": "7 days",
+  "price_minor": 35000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "website",
+  "group": "",
+  "requires": [],
+  "overlaps": [
+   "ST-06"
+  ],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "taking orders and payments online"
+ },
+ {
+  "code": "ST-16",
+  "name": "custom software discovery and specification",
+  "owner": "subt",
+  "level": "scaling",
+  "value": "define the system properly before committing to a build.",
+  "inclusions": [
+   "process review",
+   "user roles",
+   "prioritised requirements",
+   "key screens",
+   "build estimate"
+  ],
+  "exclusions": [],
+  "duration": "7 days",
+  "price_minor": 10000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "the build itself is quoted after discovery.",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "a clear plan for your software"
+ },
+ {
+  "code": "HB-04",
+  "name": "supervisor development training",
+  "owner": "hub",
+  "level": "scaling",
+  "value": "team leads assign work, check quality and report problems the same way.",
+  "inclusions": [
+   "two remote sessions",
+   "up to five supervisors",
+   "review templates"
+  ],
+  "exclusions": [],
+  "duration": "within 7 days",
+  "price_minor": 6000000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "",
+  "format": "guide",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "IO-01",
+  "name": "physical technology needs assessment",
+  "owner": "iotics",
+  "level": "scaling",
+  "value": "find out whether devices or installations can solve a real problem.",
+  "inclusions": [
+   "one remote assessment",
+   "requirements summary",
+   "options and indicative scope"
+  ],
+  "exclusions": [
+   "travel and site visits"
+  ],
+  "duration": "5 days",
+  "price_minor": 3500000,
+  "basis": "fixed",
+  "status": "proposed",
+  "external": "a site survey and any installation are quoted separately.",
+  "format": "document",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "systems",
+  "onboarding": [],
+  "focus": "finding the right devices for your space"
+ },
+ {
+  "code": "MD-13",
+  "name": "social media management",
+  "owner": "medialy",
+  "level": "renewals",
+  "value": "a steady presence with planned content and monthly review.",
+  "inclusions": [
+   "two platforms",
+   "12 original pieces a month",
+   "up to four short edits from footage you supply",
+   "scheduling",
+   "one report"
+  ],
+  "exclusions": [
+   "advertising spend is separate."
+  ],
+  "duration": "monthly",
+  "price_minor": 10000000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "a steady social media presence"
+ },
+ {
+  "code": "MD-14",
+  "name": "advertising management",
+  "owner": "medialy",
+  "level": "renewals",
+  "value": "campaigns improved using their real results.",
+  "inclusions": [
+   "one platform",
+   "up to two campaigns",
+   "weekly checks",
+   "monthly report"
+  ],
+  "exclusions": [
+   "advertising spend is separate."
+  ],
+  "duration": "monthly",
+  "price_minor": 7500000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [
+   "MD-11"
+  ],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "improving your ads over time"
+ },
+ {
+  "code": "MD-15",
+  "name": "enquiry and sales follow-up",
+  "owner": "medialy",
+  "level": "renewals",
+  "value": "enquiries keep moving to a decision instead of going cold.",
+  "inclusions": [
+   "one inbox",
+   "up to 100 new enquiries a month",
+   "business-hour coverage"
+  ],
+  "exclusions": [],
+  "duration": "monthly",
+  "price_minor": 8000000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "following up every enquiry"
+ },
+ {
+  "code": "FN-04",
+  "name": "bookkeeping support",
+  "owner": "finance",
+  "level": "renewals",
+  "value": "current records and a clear monthly financial position.",
+  "inclusions": [
+   "up to 100 transactions",
+   "two bank accounts",
+   "reconciliation",
+   "management reports"
+  ],
+  "exclusions": [],
+  "duration": "monthly",
+  "price_minor": 7500000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "your books kept up to date"
+ },
+ {
+  "code": "BZ-15",
+  "name": "compliance record and dashboard management",
+  "owner": "bizdoc",
+  "level": "renewals",
+  "value": "obligations, evidence and deadlines kept current.",
+  "inclusions": [
+   "one entity",
+   "up to ten obligations",
+   "monthly review and reminders"
+  ],
+  "exclusions": [
+   "filings and tax calculations"
+  ],
+  "duration": "monthly",
+  "price_minor": 3500000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "keeping every compliance date visible"
+ },
+ {
+  "code": "ST-17",
+  "name": "website and workspace care",
+  "owner": "subt",
+  "level": "renewals",
+  "value": "your digital tools maintained, with small changes handled.",
+  "inclusions": [
+   "one website and one workspace",
+   "monthly checks",
+   "up to two hours of minor updates"
+  ],
+  "exclusions": [
+   "new features"
+  ],
+  "duration": "monthly",
+  "price_minor": 5000000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "keeping your tools working"
+ },
+ {
+  "code": "IW-04",
+  "name": "opportunity monitoring",
+  "owner": "iwiin",
+  "level": "renewals",
+  "value": "relevant opportunities screened for your profile every month.",
+  "inclusions": [
+   "monthly search",
+   "up to five matches when available"
+  ],
+  "exclusions": [],
+  "duration": "monthly",
+  "price_minor": 4000000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "the number of available opportunities varies.",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "watching for suitable opportunities"
+ },
+ {
+  "code": "HH-07",
+  "name": "business performance review",
+  "owner": "holding",
+  "level": "renewals",
+  "value": "your monthly numbers turned into clear actions.",
+  "inclusions": [
+   "review of your dashboard",
+   "one meeting",
+   "written action list"
+  ],
+  "exclusions": [],
+  "duration": "monthly",
+  "price_minor": 4000000,
+  "basis": "monthly",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "HB-05",
+  "name": "refresher or new-staff training",
+  "owner": "hub",
+  "level": "renewals",
+  "value": "new and existing staff use your tools correctly.",
+  "inclusions": [
+   "one remote session on your existing tools",
+   "up to five people"
+  ],
+  "exclusions": [],
+  "duration": "one session",
+  "price_minor": 3000000,
+  "basis": "session",
+  "status": "proposed",
+  "external": "",
+  "format": "guide",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "MD-16",
+  "name": "existing design update",
+  "owner": "medialy",
+  "level": "renewals",
+  "value": "your materials stay accurate as details change.",
+  "inclusions": [
+   "one item",
+   "up to two hours of editing",
+   "one revision"
+  ],
+  "exclusions": [],
+  "duration": "3 days",
+  "price_minor": 2500000,
+  "basis": "request",
+  "status": "proposed",
+  "external": "",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "ST-18",
+  "name": "user access change",
+  "owner": "subt",
+  "level": "renewals",
+  "value": "access stays right as staff join, change roles or leave.",
+  "inclusions": [
+   "one user across up to three services",
+   "updated access register"
+  ],
+  "exclusions": [],
+  "duration": "2 days",
+  "price_minor": 1000000,
+  "basis": "request",
+  "status": "proposed",
+  "external": "",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": ""
+ },
+ {
+  "code": "BZ-24",
+  "name": "cac changes (directors, shares, name or address)",
+  "owner": "bizdoc",
+  "level": "renewals",
+  "value": "your registration kept accurate as the business changes.",
+  "inclusions": [
+   "review of the change",
+   "filing preparation",
+   "submission and follow-up"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 0,
+  "basis": "quote",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "structure",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   }
+  ],
+  "focus": "updating your cac records"
+ },
+ {
+  "code": "BZ-21",
+  "name": "annual returns filing",
+  "owner": "bizdoc",
+  "level": "renewals",
+  "value": "your annual returns filed on time, every year.",
+  "inclusions": [
+   "status check",
+   "preparation",
+   "filing and receipt"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 0,
+  "basis": "quote",
+  "status": "proposed",
+  "external": "government and statutory fees are separate. late filing penalties, if any, are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [
+   {
+    "label": "your cac certificate or registration documents",
+    "kind": "file",
+    "why": "we need your registration number and details to prepare the application correctly."
+   }
+  ],
+  "focus": "annual returns on time"
+ },
+ {
+  "code": "BZ-22",
+  "name": "tax filing support",
+  "owner": "bizdoc",
+  "level": "renewals",
+  "value": "your tax returns prepared and filed for the right period.",
+  "inclusions": [
+   "records review",
+   "preparation",
+   "filing support"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 0,
+  "basis": "quote",
+  "status": "proposed",
+  "external": "taxes, penalties and charges are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "tax filings on time"
+ },
+ {
+  "code": "BZ-23",
+  "name": "licence or permit renewal",
+  "owner": "bizdoc",
+  "level": "renewals",
+  "value": "your licences renewed before they lapse.",
+  "inclusions": [
+   "renewal check",
+   "preparation",
+   "submission and follow-up"
+  ],
+  "exclusions": [],
+  "duration": "14 days",
+  "price_minor": 0,
+  "basis": "quote",
+  "status": "proposed",
+  "external": "government and statutory fees are separate.",
+  "format": "file",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "licence renewals on time"
+ },
+ {
+  "code": "IO-02",
+  "name": "device maintenance",
+  "owner": "iotics",
+  "level": "renewals",
+  "value": "cameras and devices kept working.",
+  "inclusions": [
+   "agreed checks",
+   "minor fixes",
+   "report"
+  ],
+  "exclusions": [],
+  "duration": "agreed per visit",
+  "price_minor": 0,
+  "basis": "quote",
+  "status": "proposed",
+  "external": "parts and travel are separate.",
+  "format": "service",
+  "group": "",
+  "requires": [],
+  "overlaps": [],
+  "stage": "success",
+  "onboarding": [],
+  "focus": "keeping your devices working"
+ }
+]

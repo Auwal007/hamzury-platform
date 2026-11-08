@@ -1,15 +1,18 @@
 .env
 .env.*
 !.env.example
-.venv/
+node_modules/
+public/
+.vercel/
+data/
 *.tgz
 *.age
 *.key
-.payments.lock
-.storage.lock
 *.sqlite3
 *.sqlite3-wal
 *.sqlite3-shm
+# left over from the python version
+.venv/
 __pycache__/
 .pytest_cache/
 *.pyc

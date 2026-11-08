@@ -1,5 +1,7 @@
 # Deployment review and fixes - 8 November 2026
 
+> **Historical record.** This review describes the earlier Python/SQLite server. That server has since been replaced by a Node.js function on Vercel with Supabase and Cloudinary; the same behaviours and their tests were carried over. For the current setup, see [GO-LIVE.md](../GO-LIVE.md) and [free-hosting.md](free-hosting.md).
+
 The application issues from the initial review have been addressed. This is not a claim that a production host, legal documents, business settings or live payments have been approved. Use `GO-LIVE.md` as the release checklist.
 
 ## Implemented
