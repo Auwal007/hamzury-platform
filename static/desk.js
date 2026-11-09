@@ -166,8 +166,8 @@
     const c = await api('/api/admin/clients/' + id);
     const rec = c.recommendation;
     const ownedRec = new Set(c.engagements.map(e => e.rec_item_id));
-    draft = { heard: rec ? rec.heard : '', advice: rec ? rec.advice : '', management: rec ? (rec.management || '') : '',
-      items: rec ? rec.items.map(i => ({ package_id: i.package_id, price_minor: i.price_minor, note: i.note, priority: i.priority, stage: i.stage, level: i.level || 'standard', renewal: i.renewal || 'none', renewal_minor: i.renewal_minor || 0, quote: i.quote || 'fixed', assess: i.assess || '', owned: ownedRec.has(i.id), has: !!i.client_has, request: i.request || '', saved: !!i.client_saved })) : [] };
+    draft = { heard: rec ? rec.heard : '', advice: rec ? rec.advice : '', management: rec ? (rec.management || '') : '', doc: docDefaults(rec && rec.doc),
+      items: rec ? rec.items.map(i => ({ package_id: i.package_id, price_minor: i.price_minor, note: i.note, priority: i.priority, stage: i.stage, level: i.level || 'standard', renewal: i.renewal || 'none', renewal_minor: i.renewal_minor || 0, quote: i.quote || 'fixed', assess: i.assess || '', owned: ownedRec.has(i.id), has: !!i.client_has, request: i.request || '', saved: !!i.client_saved, phase: i.phase || '', suggested: !!i.suggested })) : [] };
     const intakeRows = INTAKE.filter(([k]) => c.intake[k] && (!Array.isArray(c.intake[k]) || c.intake[k].length)).map(([k, l]) => `<dt>${esc(c.intake[k + '_q'] || l)}</dt><dd>${esc(intakeValue(c, k))}</dd>`).join('');
     main().innerHTML = `<p><button class="btn-text" data-go="clients">&#8249; all clients</button></p>` +
       head(`${c.business || c.name}`, `${c.ref} · ${c.name} · ${c.phone}${c.email ? ' · ' + c.email : ''}`, badge(c.status) + badge(c.update_state) + (c.intake.route === 'quick' ? '<span class="badge badge-late">urgent</span>' : '') + '<button class="sbtn primary" id="waBtn">message on whatsapp</button>') +
@@ -186,13 +186,14 @@
             <div class="dfield"><label for="rHeard">what we heard (in the client's words)</label><textarea id="rHeard" placeholder="you have been trading for two years and orders on whatsapp are hard to track.">${esc(draft.heard)}</textarea></div>
             <div class="dfield"><label for="rAdvice">what we recommend, and why</label><textarea id="rAdvice" placeholder="start with a simple order tracker, then a brand refresh so new customers trust you.">${esc(draft.advice)}</textarea></div>
             <div class="dfield"><label for="rMgmt">after delivery (optional, shown in the proposal and pdf)</label><textarea id="rMgmt" placeholder="for example: what we look after once work is delivered, and how renewals work for this client.">${esc(draft.management)}</textarea></div>
+            ${docPanel()}
             ${rec && rec.auto && rec.status !== 'published' ? '<div class="note small">drafted automatically from their answers. check each item, the urgency and the fees, then publish. the client only sees the plain focus lines until you do.</div>' : ''}
             <label class="dfield"><span class="tiny muted">roadmap items. the level groups them for reading. the urgency colour tells the client what to do first. nothing is locked: the client can choose any item, any time.</span></label>
             <div id="selWarn"></div>
             <div id="selItems"></div>
             <div class="row mt-8"><select id="catVenture" class="sbtn"><option value="">all teams</option>${OWNERS.map(v => `<option>${v}</option>`).join('')}</select><input id="catSearch" class="sbtn" placeholder="search name or code"><span class="tiny muted">add from the catalogue</span></div>
             <div id="catList" class="mt-8"></div>
-            <div class="row mt-16"><button class="sbtn" id="saveRec">save draft</button><button class="sbtn primary" id="pubRec">${rec && rec.status === 'published' ? 'save and update for client' : 'publish to client'}</button>${rec && rec.status === 'published' ? '<button class="sbtn" id="recPdf">proposal pdf</button>' : ''}</div>
+            <div class="row mt-16"><button class="sbtn" id="saveRec">save draft</button><button class="sbtn primary" id="pubRec">${rec && rec.status === 'published' ? 'save and update for client' : 'publish to client'}</button><button class="sbtn" id="recPdf">${rec && rec.status === 'published' ? 'proposal pdf' : 'preview pdf'}</button></div>
             <p class="tiny muted mt-8">the client sees it in their dashboard after you publish. tell them on whatsapp too.</p>
           </div></div>
         </div>
@@ -218,26 +219,46 @@
       try { await api('/api/admin/clients/' + id, { method: 'PATCH', body: { status: $('cStatus').value, owner_user_id: $('cOwner').value ? Number($('cOwner').value) : null, notes: $('cNotes').value, plan_eta: $('cEta').value } }); toast('saved'); }
       catch (ex) { toast(ex.message, true); }
     });
-    const saveRec = async () => {
+    const readDraft = () => {
       draft.heard = $('rHeard').value; draft.advice = $('rAdvice').value; draft.management = $('rMgmt').value;
-      await api(`/api/admin/clients/${id}/recommendation`, { method: 'PUT', body: { heard: draft.heard, advice: draft.advice, management: draft.management, items: draft.items.map(({ owned, request, saved, ...x }) => x) } });
+      const v = k => ($(k) ? $(k).value : '').trim();
+      draft.doc = { topic: v('pTopic'), headline: v('pHead'), intro: v('pIntro'),
+        strategy: [1, 2, 3].map(n => ({ title: v('pS' + n + 't'), body: v('pS' + n + 'b') })).filter(x => x.title || x.body),
+        your_part: v('pYour'), our_part: v('pOur'), how_we_work: v('pHow').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 8),
+        disclosure: v('pDisc'), rate_label: v('pRateL'), rate_pct: Math.max(0, Math.min(90, parseInt(v('pRateP'), 10) || 0)), rate_why: v('pRateWhy'),
+        lead_venture: v('pLead'), cta_note: v('pCta'), footnote: v('pFoot') };
+    };
+    const saveRec = async () => {
+      readDraft();
+      await api(`/api/admin/clients/${id}/recommendation`, { method: 'PUT', body: { heard: draft.heard, advice: draft.advice, management: draft.management, doc: draft.doc, items: draft.items.map(({ owned, request, saved, ...x }) => x) } });
     };
     $('saveRec').addEventListener('click', async () => { try { await saveRec(); toast('draft saved'); } catch (ex) { toast(ex.message, true); } });
     $('pubRec').addEventListener('click', async () => {
       try { await saveRec(); await api(`/api/admin/clients/${id}/recommendation/publish`, { method: 'POST' }); toast('published. now send it on whatsapp.'); await clientView(id); waModal(c, 'plan_ready'); }
       catch (ex) { toast(ex.message, true); }
     });
-    if ($('recPdf')) $('recPdf').addEventListener('click', async () => {
-      const LV = ['minimum', 'standard', 'protection', 'scaling'];
-      const MEAN = { renewals: 'keep everything current as you grow: renewals, filings, updates and changes.', minimum: 'the essentials your business needs to run properly.', standard: 'what makes you organised, trusted and easy to buy from.', protection: 'protect what you have built: records, data, money and people.', scaling: 'systems that let the business grow beyond you.' };
-      const d = { first: c.name.trim().split(/\s+/)[0], name: c.name, business: c.business, ref: c.ref,
+    $('recPdf').addEventListener('click', async () => {
+      readDraft();
+      const pk = it => packages.find(x => x.id === it.package_id) || {};
+      const d = { name: c.name, business: c.business, ref: c.ref, heard: draft.heard, advice: draft.advice, management: draft.management, doc: draft.doc,
         date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
-        advice: rec.advice, management: rec.management || '',
-        promises: ['You see every price before you decide. Nothing starts until you choose.', 'One team looks after you. Follow every step with your Hamzury ID, and hear from us within 48 hours while work is active.', 'We are honest about what we can promise. We never guarantee grants, income or growth.'],
-        levels: [...LV, 'renewals'].map(L => ({ name: L === 'renewals' ? 'renewals and changes' : L, meaning: MEAN[L], items: rec.items.filter(x => (x.level || 'standard') === L).sort((p, q) => p.priority - q.priority)
-          .map(x => { const pk = packages.find(p => p.id === x.package_id) || {}; return { name: x.name, venture: x.venture, vname: x.venture === 'hub' ? 'hamzury hub' : x.venture, why: x.note || pk.summary || '' }; }) })).filter(l => l.items.length) };
-      try { const blob = await window.HZProposal.pdf(d); await window.HZProposal.save(blob, `hamzury-proposal-${c.ref.toLowerCase()}.pdf`, 'hamzury proposal'); toast('pdf ready. attach it on whatsapp.'); }
+        items: draft.items.map(it => { const p = pk(it); return { name: p.name, venture: p.venture, code: p.code, duration: p.duration, why: it.note || p.summary || '',
+          external: p.external, requires: p.requires, basis: p.basis, level: it.level, quote: it.quote, fee_pending: !it.owned && it.quote === 'fixed' && p.price_status !== 'approved',
+          price_minor: it.price_minor ?? p.price_minor, list_minor: p.price_minor, renewal: it.renewal, renewal_minor: it.renewal_minor, phase: it.phase, suggested: it.suggested, client_has: it.has }; }) };
+      try { await window.HZProposalDoc.print(d, `hamzury-proposal-${c.ref.toLowerCase()}`); toast('choose "save as pdf" on the print screen, then attach it on whatsapp.'); }
       catch (ex) { toast('could not make the pdf', true); }
+    });
+    $('rateApply').addEventListener('click', () => {
+      const pct = Math.max(0, Math.min(90, parseInt($('pRateP').value, 10) || 0));
+      let n = 0;
+      draft.items.forEach(it => {
+        const p = packages.find(x => x.id === it.package_id) || {};
+        if (it.owned || it.quote !== 'fixed' || !p.price_minor) return;
+        it.price_minor = Math.round(p.price_minor * (100 - pct) / 100 / 100000) * 100000;  // nearest ₦1,000
+        if (p.basis === 'monthly') it.renewal_minor = it.price_minor;
+        n++;
+      });
+      renderSel(); toast(pct ? `${pct}% off applied to ${n} prices. save to keep it.` : `standard prices restored on ${n} items. save to keep it.`);
     });
     $('postUp').addEventListener('click', async () => {
       try {
@@ -247,6 +268,33 @@
         $('copyWa').addEventListener('click', async () => { try { await navigator.clipboard.writeText(d.whatsapp_text); toast('copied'); } catch (e) { toast('select the text and copy it', true); } });
       } catch (ex) { toast(ex.message, true); }
     });
+  }
+  // the proposal page: the story on page 1 and the client rate. empty fields fall back to the simple proposal.
+  function docDefaults(d) {
+    d = d || {};
+    return { topic: d.topic || '', headline: d.headline || '', intro: d.intro || '', strategy: d.strategy || [], your_part: d.your_part || '', our_part: d.our_part || '',
+      how_we_work: d.how_we_work && d.how_we_work.length ? d.how_we_work : window.HZProposalDoc.PROMISES, disclosure: d.disclosure || '',
+      rate_label: d.rate_label || '', rate_pct: d.rate_pct || 0, rate_why: d.rate_why || '', lead_venture: d.lead_venture || '', cta_note: d.cta_note || '', footnote: d.footnote || '' };
+  }
+  function docPanel() {
+    const d = draft.doc, s = k => d.strategy[k] || { title: '', body: '' };
+    const ta = (id, label, val, ph, rows = 2) => `<div class="dfield"><label for="${id}">${label}</label><textarea id="${id}" rows="${rows}" placeholder="${esc(ph)}">${esc(val)}</textarea></div>`;
+    const inp = (id, label, val, ph) => `<div class="dfield"><label for="${id}">${label}</label><input id="${id}" value="${esc(val)}" placeholder="${esc(ph)}"></div>`;
+    return `<details class="doc-panel" ${d.headline || d.strategy.length ? 'open' : ''}><summary><b>proposal page</b> <span class="tiny muted">headline, strategy, your part / our part, client rate. "what we heard" above becomes one card per line.</span></summary>
+      <div class="grid2">${inp('pTopic', 'topic (under their name)', d.topic, 'Publicity, NYIP')}
+        <div class="dfield"><label for="pLead">lead venture (logo and colour)</label><select id="pLead"><option value="">automatic (most items)</option>${VENTURES.map(v => `<option value="${v}" ${v === d.lead_venture ? 'selected' : ''}>${v}</option>`).join('')}</select></div></div>
+      ${ta('pHead', 'headline (one or two lines)', d.headline, 'Publicity with structured intention.\nYou lead the message. We run the work.')}
+      ${ta('pIntro', 'opening paragraph', d.intro, 'NYIP already has the pages, the website, the logo and the guidelines. What it needs now is a plan that...', 3)}
+      <label class="tiny muted">strategy, up to three parts (leave empty to show "what we recommend" instead)</label>
+      <div class="grid3">${[1, 2, 3].map(n => `<div>${inp('pS' + n + 't', 'part ' + n + ' title', s(n - 1).title, ['Structured intention', 'Distribution', 'Management'][n - 1])}${ta('pS' + n + 'b', 'part ' + n, s(n - 1).body, '', 4)}</div>`).join('')}</div>
+      <div class="grid2">${ta('pYour', 'your part (the client)', d.your_part, 'One weekly review, about 20 minutes. You approve, change or stop each item.')}${ta('pOur', 'our part', d.our_part, 'Everything else: planning, design, writing, posting, replies, follow up and reporting.')}</div>
+      ${ta('pHow', 'how we work (one point per line)', d.how_we_work.join('\n'), '', 4)}
+      ${ta('pDisc', 'open and fair (optional: any interest to declare, special terms)', d.disclosure, 'A member of the Hamzury team also serves as a director of NYIP. We declare this openly.')}
+      <div class="grid3">${inp('pRateL', 'client rate name', d.rate_label, 'NYIP rate')}${inp('pRateP', 'discount %', d.rate_pct || '', '30')}${inp('pRateWhy', 'why (optional)', d.rate_why, 'because NYIP is a nonprofit')}</div>
+      <div class="row"><button class="sbtn" type="button" id="rateApply">apply rate to all prices</button><span class="tiny muted">sets each fee below to the standard price minus the discount. clients pay these fees. paid items never change.</span></div>
+      ${ta('pCta', 'closing note (optional, after our suggestion)', d.cta_note, 'Add the rest as the event gets close.')}
+      ${inp('pFoot', 'extra footnote under the prices (optional)', d.footnote, 'Ad spend is paid by NYIP to Meta directly. Travel outside Abuja added only where it applies.')}
+    </details>`;
   }
   // what the desk should look at before publishing: alternatives, needs-first and overlaps
   function warnings() {
@@ -282,15 +330,19 @@
         <div class="dfield"><label>our assessment</label><select data-k="${k}" data-f="assess" ${dis}>${[['', 'recommend'], ['verify', 'checking first'], ['improve', 'improve theirs']].map(([v, l]) => `<option value="${v}" ${v === it.assess ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
         <label class="check mt-16"><input type="checkbox" data-k="${k}" data-f="has" ${it.has ? 'checked' : ''} ${dis}><span>they already have this</span></label></div>
         ${it.request ? `<div class="note small mt-4"><b>the client answered:</b>${reqHtml(it.request)}<span class="tiny muted">reply on whatsapp with their route, then set the fee and switch pricing to "show the fee" so they can pay.</span></div>` : ''}
+        <div class="grid3"><div class="dfield"><label>roadmap phase (proposal table)</label><input data-k="${k}" data-f="phase" list="phaseList" value="${esc(it.phase || '')}" placeholder="${esc(p.basis === 'monthly' ? 'Every month' : 'Start here')}"></div>
+          <label class="check mt-16"><input type="checkbox" data-k="${k}" data-f="suggested" ${it.suggested ? 'checked' : ''}><span>suggested start</span></label>
+          <div class="row mt-16">${k ? `<button class="sbtn" type="button" data-up="${k}">move up</button>` : ''}<span class="tiny muted">number ${k + 1} in the proposal</span></div></div>
         <div class="dfield"><label>why this fits them (shown to the client)</label><textarea data-k="${k}" data-f="note" rows="2">${esc(it.note)}</textarea></div></div>`;
-    }).join('');
+    }).join('') + `<datalist id="phaseList">${[...new Set(['Start here', 'Before the event', 'Every month', ...draft.items.map(i => i.phase).filter(Boolean)])].map(x => `<option value="${esc(x)}">`).join('')}</datalist>`;
     box.querySelectorAll('[data-f]').forEach(el => el.addEventListener('input', () => {
       const it = draft.items[el.dataset.k], f = el.dataset.f;
       if (f === 'price') it.price_minor = toMinor(el.value); else if (f === 'renewal_minor') it.renewal_minor = toMinor(el.value) || 0; else if (f === 'priority') it.priority = Number(el.value);
-      else if (f === 'has') it.has = el.checked; else it[f] = el.value;
+      else if (f === 'has') it.has = el.checked; else if (f === 'suggested') it.suggested = el.checked; else it[f] = el.value;
       if (['priority', 'has', 'assess', 'quote'].includes(f)) renderSel();
     }));
     box.querySelectorAll('select[data-f],input[type=checkbox][data-f]').forEach(el => el.addEventListener('change', () => el.dispatchEvent(new Event('input'))));
+    box.querySelectorAll('[data-up]').forEach(b => b.addEventListener('click', () => { const k = Number(b.dataset.up); [draft.items[k - 1], draft.items[k]] = [draft.items[k], draft.items[k - 1]]; renderSel(); }));
     box.querySelectorAll('[data-rm]').forEach(b => b.addEventListener('click', () => { draft.items.splice(Number(b.dataset.rm), 1); renderSel(); renderCat(); }));
     box.querySelectorAll('[data-approve]').forEach(b => b.addEventListener('click', () => approveBox(packages.find(x => x.id === Number(b.dataset.approve)), () => renderSel())));
   }
@@ -319,7 +371,7 @@
       const lv = p.level || ({ awareness: 'minimum', strategy: 'minimum', structure: 'standard', systems: 'protection', success: 'scaling' }[p.stage] || 'standard');
       const monthly = p.basis === 'monthly';
       draft.items.push({ package_id: p.id, price_minor: p.price_minor, note: '', priority: 2, stage: p.stage, level: lv, renewal: monthly ? 'monthly' : 'none', renewal_minor: monthly ? p.price_minor : 0,
-        quote: p.basis === 'quote' || !p.price_minor ? 'ask' : 'fixed', assess: '', owned: false, has: false, request: '' }); renderSel(); renderCat();
+        quote: p.basis === 'quote' || !p.price_minor ? 'ask' : 'fixed', assess: '', owned: false, has: false, request: '', phase: '', suggested: false }); renderSel(); renderCat();
     }));
   }
 

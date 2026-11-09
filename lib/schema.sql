@@ -54,6 +54,10 @@ CREATE TABLE IF NOT EXISTS rec_items (
   level text COLLATE "C" NOT NULL DEFAULT 'standard', client_has integer NOT NULL DEFAULT 0, renewal text COLLATE "C" NOT NULL DEFAULT 'none',
   renewal_minor bigint NOT NULL DEFAULT 0, quote text COLLATE "C" NOT NULL DEFAULT 'fixed', request text COLLATE "C" NOT NULL DEFAULT '',
   requested_at text COLLATE "C", assess text COLLATE "C" NOT NULL DEFAULT '', client_saved integer NOT NULL DEFAULT 0);
+-- the proposal page: headline, strategy, client rate and the rest, as json. items get a phase label and a suggested-start flag.
+ALTER TABLE recommendations ADD COLUMN IF NOT EXISTS doc text COLLATE "C" NOT NULL DEFAULT '{}';
+ALTER TABLE rec_items ADD COLUMN IF NOT EXISTS phase text COLLATE "C" NOT NULL DEFAULT '';
+ALTER TABLE rec_items ADD COLUMN IF NOT EXISTS suggested integer NOT NULL DEFAULT 0;
 CREATE TABLE IF NOT EXISTS orders (
   id serial PRIMARY KEY, client_id integer NOT NULL REFERENCES clients(id), reference text COLLATE "C" NOT NULL UNIQUE,
   total_minor bigint NOT NULL, status text COLLATE "C" NOT NULL DEFAULT 'pending', method text COLLATE "C" NOT NULL DEFAULT '',

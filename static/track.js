@@ -331,22 +331,26 @@
   function proposalScreen() {
     if (!me.recommendation) return homeScreen();
     setTop('home', 'home'); updateCart(false);
-    const r = me.recommendation, P = window.HZProposal, first = P.cap(me.name.trim().split(/\s+/)[0]), vi = P.ventureIntro(proposalData());
-    app.innerHTML = `<div class="fade-in proposal">
-      <span class="eyebrow">${esc(me.business ? 'Proposal for ' + me.business : 'Your proposal')}</span>
-      <h1 class="hello">${esc(first)}, you took the first step.</h1>
-      <p class="lead-p">You stopped, looked honestly at ${esc(me.business || 'your business')} and asked for a clear way forward. That is how growth starts. We are proud to build it with you.</p>
-      <div class="journey-mini" aria-label="Your journey: you are at strategy">${STAGES.map((s, k) => `<span class="${k < 1 ? 'done' : k === 1 ? 'now' : ''}">${esc(P.cap(s))}</span>`).join('')}</div>
-      <section class="p-sec"><h2>Our recommendation</h2><p class="p-big">${esc(r.advice)}</p></section>
-      ${vi ? `<section class="p-sec"><h2>Who will work with you</h2><p>${esc(vi.intro)}</p><ul class="p-ventures">${vi.rows.map(v => `<li><span class="vtag v-${esc(v.key)}">${esc(v.name)}</span><span>${esc(v.area)}${v.line ? ' · <i>' + esc(v.line) + '</i>' : ''}</span></li>`).join('')}</ul></section>` : ''}
-      <section class="p-sec"><h2>How we work with you</h2><ul class="p-list">${promises().map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
-      ${r.management ? `<section class="p-sec"><h2>After delivery</h2><p>${esc(r.management)}</p></section>` : ''}
-      <button class="btn btn-primary btn-block mt-32" data-go="roadmap">See my roadmap</button>
-      <div class="p-save"><button class="btn btn-ghost" type="button" id="saveCard">Save to my phone</button><button class="btn btn-ghost" type="button" id="savePdf">Full proposal (PDF)</button></div>
+    app.innerHTML = `<div class="fade-in proposal proposal-doc">
+      ${window.HZProposalDoc.render(docData())}
+      <button class="btn btn-primary btn-block mt-32" data-go="roadmap">See my roadmap and choose</button>
+      <div class="p-save"><button class="btn btn-ghost" type="button" id="saveCard">Save to my phone</button><button class="btn btn-ghost" type="button" id="savePdf">Download PDF</button></div>
       <p class="tiny muted mt-12">Your proposal stays here too. Sign in any time with ${esc(me.ref)}.</p>
     </div>`;
     $('saveCard').addEventListener('click', () => keepFile('card'));
     $('savePdf').addEventListener('click', () => keepFile('pdf'));
+  }
+  // the proposal page data: the published plan in the order the team set, without alternatives already settled
+  function docData() {
+    const r = me.recommendation;
+    return {
+      name: me.name, business: me.business, ref: me.ref, heard: r.heard, advice: r.advice, management: r.management || '', doc: r.doc || {},
+      date: new Date(r.published_at || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+      items: items().filter(x => !groupTaken(x)).map(x => ({ name: x.package.name, venture: x.package.venture, code: x.package.code, duration: x.package.duration,
+        why: x.note || x.package.summary || '', external: x.package.external, requires: x.package.requires, basis: x.package.basis, level: x.level,
+        quote: x.quote, fee_pending: x.fee_pending, price_minor: x.package.price_minor, list_minor: x.list_minor, renewal: x.renewal, renewal_minor: x.renewal_minor,
+        phase: x.phase, suggested: x.suggested, client_has: x.client_has })),
+    };
   }
   const promises = () => ['You see every price before you decide. Nothing starts until you choose.', `One team looks after you. Follow every step with your Hamzury ID, and hear from us within ${me.review_hours} hours while work is active.`, 'We are honest about what we can promise. We never guarantee grants, income or growth.'];
   function proposalData() {
@@ -368,9 +372,8 @@
         const res = await window.HZProposal.save(blob, `hamzury-proposal-${slug}.png`, 'my hamzury proposal');
         if (res !== 'cancelled') showCard(blob);
       } else {
-        const blob = await window.HZProposal.pdf(d);
-        const res = await window.HZProposal.save(blob, `hamzury-proposal-${slug}.pdf`, 'my hamzury proposal');
-        if (res === 'downloaded') toast('your proposal is downloading.');
+        await window.HZProposalDoc.print(docData(), `hamzury-proposal-${slug}`);
+        toast('Choose "Save as PDF" on the print screen.');
       }
     } catch (ex) { toast('we could not prepare it. please try again.'); }
     b.disabled = false; b.textContent = was;

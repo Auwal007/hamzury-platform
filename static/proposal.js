@@ -1,28 +1,9 @@
-/* hamzury proposal renderer: draws the proposal card (an image clients save to their phone) and the
-   full proposal + roadmap pdf, in the browser, from one data object. no libraries, no server. */
+/* hamzury proposal renderer: draws the proposal card, an image clients save to their phone.
+   the full proposal page and its pdf come from proposal-doc.js. */
 (function () {
   const C = { milk: '#f8f3eb', white: '#ffffff', ink: '#1d2433', ink2: '#3d4657', slate: '#586779', line: '#e6ddd1', choc: '#3b241a', bronze: '#b99770', done: '#1e7b4f' };
-  const VC = { bizdoc: '#18875b', medialy: '#c63645', subt: '#2466bf', iotics: '#e4b329', hub: '#14233b', iwiin: '#8acb62' };
   const F = (w, px) => `${w} ${px}px "Inter", Arial, sans-serif`;
-  const naira = m => '₦' + new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 }).format((m || 0) / 100);
-  // proper display names and capitals for client-facing text
-  const VNAME = { bizdoc: 'BizDoc', medialy: 'Medialy', subt: 'SUBT', iotics: 'Iotics', hub: 'Hamzury Hub', iwiin: 'IWIIN' };
-  const VORDER = ['bizdoc', 'medialy', 'subt', 'iotics', 'hub', 'iwiin'];
   const cap = t => { t = String(t || ''); return t.charAt(0).toUpperCase() + t.slice(1); };
-  const sent = t => String(t || '').replace(/(^|[.!?:]\s+)([a-z])/g, (m, a, b) => a + b.toUpperCase()).replace(/\bhamzury id\b/gi, 'Hamzury ID');
-  // which ventures this proposal involves: roadmap items first, then any venture named in the written text
-  function ventureIntro(d) {
-    const keys = [];
-    (d.levels || []).forEach(l => (l.items || []).forEach(it => { if (VNAME[it.venture] && !keys.includes(it.venture)) keys.push(it.venture); }));
-    const words = ' ' + ((d.advice || '') + ' ' + (d.management || '')).toLowerCase().replace(/[^a-z]+/g, ' ') + ' ';
-    VORDER.forEach(k => { if (!keys.includes(k) && words.includes(k === 'hub' ? ' hamzury hub ' : ' ' + k + ' ')) keys.push(k); });
-    if (!keys.length) return null;
-    const V = (window.HZ && window.HZ.ventures) || {};
-    return {
-      intro: `Hamzury Holding brings six expert ventures together under one team: ${VORDER.slice(0, -1).map(k => VNAME[k]).join(', ')} and ${VNAME.iwiin}. Each venture focuses on one area, so you work with specialists while one team looks after you. This proposal is delivered by:`,
-      rows: keys.map(k => ({ key: k, name: VNAME[k], area: V[k] ? cap(V[k].area) : '', line: V[k] ? cap(V[k].line) : '' })),
-    };
-  }
   const LOGO = (document.currentScript && document.currentScript.src || '').replace(/proposal\.js.*$/, 'img/hamzury.png');
 
   let logoP = null;
@@ -94,89 +75,6 @@
     return new Promise(res => cv.toBlob(res, 'image/png'));
   }
 
-  /* ---------- the pdf: a4 pages drawn at 150 dpi ---------- */
-  async function pdf(d) {
-    const img = await ready();
-    const W = 1240, H = 1754, M = 110, CW = W - M * 2, BOTTOM = H - 135;
-    const pages = []; let cv, ctx, y;
-    const footer = n => { hr(ctx, M, H - 110, CW); ctx.font = F(500, 22); ctx.fillStyle = C.slate; ctx.fillText(`Hamzury · Proposal for ${d.business || d.name} · ${d.ref}`, M, H - 68); ctx.textAlign = 'right'; ctx.fillText('Page ' + n, W - M, H - 68); ctx.textAlign = 'left'; };
-    const page = () => { if (cv) { footer(pages.length + 1); pages.push(cv); } [cv, ctx] = canvas(W, H); rule(ctx, W); if (img) ctx.drawImage(img, M, 70, 190, 190 * img.height / img.width); y = 200; };
-    const need = h => { if (y + h > BOTTOM) page(); };
-    const label = s => { need(90); ctx.font = F(600, 24); ctx.fillStyle = C.choc; ctx.fillText(s, M, y); y += 44; };
-    const para = (s, font = F(400, 27), color = C.ink2, lh = 39) => {
-      ctx.font = font; wrap(ctx, s, CW).forEach(l => { need(lh); ctx.font = font; ctx.fillStyle = color; ctx.fillText(l, M, y); y += lh; }); y += 10;
-    };
-    page();
-    ctx.font = F(600, 24); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText(d.date + ' · ' + d.ref, W - M, 100); ctx.textAlign = 'left';
-    ctx.font = F(600, 26); ctx.fillStyle = C.choc; ctx.fillText('Proposal for ' + (d.business || d.name), M, y); y += 76;
-    para(`${cap(d.first)}, you took the first step.`, F(700, 60), C.ink, 70); y += 6;
-    para(`You stopped, looked honestly at ${d.business || 'your business'} and asked for a clear way forward. That is how growth starts. This proposal is built only on what you told us, and we are proud to build it with you.`, F(400, 30), C.ink2, 46);
-    y += 14; journey(ctx, M + 10, y + 46, CW - 20, 1); y += 130; hr(ctx, M, y, CW); y += 56;
-    label('Our recommendation'); para(d.advice, F(500, 30), C.ink, 45); y += 18;
-    const vi = ventureIntro(d);
-    if (vi) {
-      label('Who will work with you'); para(vi.intro, F(400, 27), C.ink2, 40); y += 6;
-      vi.rows.forEach(r => {
-        ctx.font = F(400, 25); const sub = wrap(ctx, r.area + (r.line ? ' · ' + r.line : ''), CW - 30);
-        need(46 + sub.length * 34); y += 8;
-        ctx.fillStyle = VC[r.key] || C.slate; ctx.fillRect(M, y - 20, 14, 14);
-        ctx.font = F(700, 29); ctx.fillStyle = C.ink; ctx.fillText(r.name, M + 30, y);
-        ctx.font = F(400, 25); ctx.fillStyle = C.ink2; sub.forEach(l => { y += 34; ctx.fillText(l, M + 30, y); });
-        y += 24;
-      });
-      y += 12;
-    }
-    label('How we work with you'); d.promises.forEach(s => para(sent(s), F(400, 27), C.ink2, 40)); y += 12;
-    if (d.management) { label('After delivery'); para(d.management); }
-    // roadmap: the journey, no prices
-    page();
-    ctx.font = F(600, 26); ctx.fillStyle = C.choc; ctx.fillText('Your journey to scale', M, y); y += 76;
-    para(`This is the journey we recommend for ${d.business || 'your business'}. Implemented in order, each level builds on the one before it, so the business grows on solid ground. Begin with level one at hamzury.com, using your Hamzury ID ${d.ref}.`, F(400, 28), C.ink2, 42); y += 40;
-    d.levels.forEach((lv, k) => {
-      need(130);
-      ctx.beginPath(); ctx.arc(M + 26, y - 12, 26, 0, Math.PI * 2); ctx.fillStyle = C.choc; ctx.fill();
-      ctx.font = F(700, 25); ctx.fillStyle = C.white; ctx.textAlign = 'center'; ctx.fillText(String(k + 1), M + 26, y - 3); ctx.textAlign = 'left';
-      ctx.font = F(700, 38); ctx.fillStyle = C.ink; ctx.fillText(cap(lv.name), M + 76, y); y += 40;
-      ctx.font = F(400, 25); ctx.fillStyle = C.slate; ctx.fillText(sent(lv.meaning), M + 76, y); y += 30;
-      lv.items.forEach(it => {
-        ctx.font = F(400, 23); const why = it.why ? wrap(ctx, cap(it.why), CW - 100).slice(0, 2) : [];
-        need(56 + why.length * 30); hr(ctx, M + 76, y, CW - 76); y += 40;
-        ctx.fillStyle = VC[it.venture] || C.slate; ctx.fillRect(M + 76, y - 18, 12, 12);
-        ctx.font = F(600, 28); ctx.fillStyle = C.ink; ctx.fillText(wrap(ctx, cap(it.name), CW - 300)[0], M + 100, y);
-        ctx.font = F(500, 22); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText(VNAME[it.venture] || cap(it.vname), W - M, y); ctx.textAlign = 'left';
-        ctx.font = F(400, 23); ctx.fillStyle = C.ink2; why.forEach(l => { y += 30; ctx.fillText(l, M + 100, y); });
-        y += 8;
-      });
-      y += 54;
-    });
-    footer(pages.length + 1); pages.push(cv);
-    return pagesToPdf(pages);
-  }
-
-  function pagesToPdf(pages) {
-    const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
-    const push = b => { const u = typeof b === 'string' ? enc.encode(b) : b; parts.push(u); len += u.length; };
-    const obj = (n, body) => { offs[n] = len; push(`${n} 0 obj\n`); body(); push('\nendobj\n'); };
-    const n = pages.length, kids = pages.map((_, k) => `${3 + k * 3} 0 R`).join(' ');
-    push('%PDF-1.4\n%\xe2\xe3\xcf\xd3\n');
-    obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
-    obj(2, () => push(`<< /Type /Pages /Kids [${kids}] /Count ${n} >>`));
-    pages.forEach((cv, k) => {
-      const pg = 3 + k * 3, im = pg + 1, ct = pg + 2;
-      const bin = atob(cv.toDataURL('image/jpeg', 0.9).split(',')[1]); const jpg = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) jpg[i] = bin.charCodeAt(i);
-      const content = 'q 595.28 0 0 841.89 0 0 cm /Im0 Do Q';
-      obj(pg, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 ${im} 0 R >> >> /Contents ${ct} 0 R >>`));
-      obj(im, () => { push(`<< /Type /XObject /Subtype /Image /Width ${cv.width} /Height ${cv.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`); push(jpg); push('\nendstream'); });
-      obj(ct, () => push(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`));
-    });
-    const total = 3 + n * 3, xref = len;
-    push(`xref\n0 ${total}\n0000000000 65535 f \n`);
-    for (let i = 1; i < total; i++) push(String(offs[i]).padStart(10, '0') + ' 00000 n \n');
-    push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
-    return new Blob(parts, { type: 'application/pdf' });
-  }
-
   // save or share a blob: phones get the share sheet (save image / save to files), others a download.
   async function save(blob, filename, title) {
     const file = new File([blob], filename, { type: blob.type });
@@ -187,5 +85,5 @@
     return 'downloaded';
   }
 
-  window.HZProposal = { card, pdf, save, ventureIntro, cap, sent, VNAME };
+  window.HZProposal = { card, save, cap };
 })();

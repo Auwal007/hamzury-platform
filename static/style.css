@@ -634,9 +634,11 @@ a.do:active{transform:scale(.99)}
 .vhero h1{text-wrap:balance}
 .card{border-radius:16px}
 .p-big{font-size:19px!important;line-height:1.55;font-weight:500}
-.p-ventures{list-style:none;margin:14px 0 0;padding:0}
-.p-ventures li{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px 0;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
-.p-ventures li:first-child{border-top:0;padding-top:0}
+/* the proposal page (proposal-doc.css) needs more room than the usual narrow column */
+.narrow:has(> .proposal-doc){width:min(900px,calc(100% - 24px))}
+.doc-panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:4px 0 16px;background:#fdfbf8}
+.doc-panel summary{cursor:pointer;padding:4px 0}
+.doc-panel[open] summary{margin-bottom:10px}
 .p-list{list-style:none;margin:0;padding:0}
 .p-list li{position:relative;padding:10px 0 10px 22px;font-size:16px;color:var(--ink-2);border-top:1px solid var(--line)}
 .p-list li:first-child{border-top:0;padding-top:4px}
