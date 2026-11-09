@@ -9,7 +9,7 @@ for (const [key, value] of Object.entries({
   HAMZURY_SECRET: token(48),
   HAMZURY_BILLING_KEY: token(48),
   CRON_SECRET: token(32),
-  HAMZURY_PUBLIC_BASE_URL: 'http://127.0.0.1:8000',
+  HAMZURY_PUBLIC_BASE_URL: 'hamzury.com',
   HAMZURY_SECURE_COOKIES: '0',
   HAMZURY_REQUIRE_STAFF_MFA: '0',
   HAMZURY_REQUIRE_UPLOAD_SCAN: '0',
