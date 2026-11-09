@@ -113,12 +113,16 @@ test('client isolation', async () => {
 });
 
 test('paystack verification', async () => {
-  const app = await makeApp();
+  const app = await makeApp({ HAMZURY_PUBLIC_BASE_URL: 'https://www.hamzury.com' });
   app.cfg.PAYSTACK_SECRET = 'sk_test_fake';
   let amount = 0;
-  app.paystack = async (method, p) => (p === '/transaction/initialize'
-    ? { status: true, data: { authorization_url: 'https://checkout.paystack.com/abc' } }
-    : { status: true, data: { status: 'success', amount, currency: 'NGN' } });
+  app.paystack = async (method, p, payload) => {
+    if (p === '/transaction/initialize') {
+      assert.equal(payload.callback_url, 'https://www.hamzury.com/pay/callback');
+      return { status: true, data: { authorization_url: 'https://checkout.paystack.com/abc' } };
+    }
+    return { status: true, data: { status: 'success', amount, currency: 'NGN' } };
+  };
   const [client] = await start(app);
   const admin = await staff(app);
   const pid = (await admin.post('/api/admin/packages', { json: { venture: 'subt', name: 'website', price_minor: 30000000 } })).json().id;

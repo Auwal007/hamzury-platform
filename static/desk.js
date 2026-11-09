@@ -678,8 +678,9 @@
   }
 
   /* ---------- whatsapp kit ---------- */
-  function kitView() {
-    const o = location.origin;
+  async function kitView() {
+    const config = await api('/api/public/config');
+    const o = config.public_base_url || location.origin;
     const items = [
       ['greeting message (whatsapp business auto-reply)', `hello, welcome to hamzury. we help businesses with registration, marketing, websites, ai and automation, smart devices, training and funding.\n\nneed help fast? tap here, it takes 1 minute:\n${o}/start?src=wa&route=quick\n\nwant the full picture and a personal plan?\n${o}/start?src=wa&route=full\n\nalready with us? track your progress:\n${o}/track\n\na member of our team will reply here shortly.`],
       ['away message (outside working hours)', `thank you for your message. our team is away right now and will reply when we are back.\n\nyou can get started now, it takes 1 minute:\n${o}/start?src=wa&route=quick`],

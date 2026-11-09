@@ -37,7 +37,7 @@ The free Cloudinary plan limits raw files to **10 MB**, while the app accepts up
 | `HAMZURY_ADMIN_PASSWORD` | 12+ characters. Used only to create the first owner |
 | `HAMZURY_ADMIN_EMAIL` | `admin@hamzury.com` (or your chosen owner login email) |
 | `HAMZURY_SECRET` | 32+ random characters. Keep it stable: it encrypts staff authenticator secrets and signs upload tickets |
-| `HAMZURY_PUBLIC_BASE_URL` | your HTTPS address, e.g. `https://hamzury.com` |
+| `HAMZURY_PUBLIC_BASE_URL` | `https://www.hamzury.com` (client links, WhatsApp templates and payment returns) |
 | `HAMZURY_SECURE_COOKIES` | `1` |
 | `HAMZURY_BILLING_KEY` | 32+ random characters, for manual `POST /api/daily/run` calls |
 | `CRON_SECRET` | a long random value. Vercel sends it to the daily job |
@@ -50,6 +50,8 @@ The free Cloudinary plan limits raw files to **10 MB**, while the app accepts up
 `node tools/configure.js` generates strong random values in a local `.env` that you can copy from. In production the app refuses to start without strong secrets, HTTPS, secure cookies, a billing key, staff MFA, upload scanning, `DATABASE_URL` and `CLOUDINARY_URL`. The API then answers with an error until the missing setting is added.
 
 3. Deploy, add your domain under **Settings > Domains**, and check `https://YOUR-DOMAIN/api/health`. It checks the database and Cloudinary.
+
+If shared messages contain `127.0.0.1` or `localhost`, set `HAMZURY_PUBLIC_BASE_URL=https://www.hamzury.com` under **Settings > Environment Variables** for **Production**, then redeploy. Set the same value for Preview if links prepared there must also open the live site. Editing your local `.env` does not update Vercel. Close and reopen any WhatsApp message dialog after deployment to generate a fresh link; messages already copied or sent retain their old address.
 
 **Plans:** Vercel's free Hobby plan is for personal, non-commercial use. A business taking client payments needs the Pro plan. Supabase's free plan pauses a project after a week without activity and has no downloadable backups. Use Supabase Pro for live clients.
 
