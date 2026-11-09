@@ -550,7 +550,7 @@ a.do:active{transform:scale(.99)}
 .journey-mini span.now{background:var(--chocolate);border-color:var(--chocolate);color:#fff}
 .p-sec{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
 .p-sec h2{font-size:15px;font-weight:600;color:var(--chocolate);letter-spacing:0;margin-bottom:8px}
-.p-sec p{font-size:17px;line-height:1.6;color:var(--ink)}
+.p-sec p{font-size:17px;line-height:1.6;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere}
 .p-ren{list-style:none;margin:12px 0 0;padding:0}
 .p-ren li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
 .p-save{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
