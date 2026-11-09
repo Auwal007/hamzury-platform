@@ -5,6 +5,24 @@
   const VC = { bizdoc: '#18875b', medialy: '#c63645', subt: '#2466bf', iotics: '#e4b329', hub: '#14233b', iwiin: '#8acb62' };
   const F = (w, px) => `${w} ${px}px "Inter", Arial, sans-serif`;
   const naira = m => '₦' + new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 }).format((m || 0) / 100);
+  // proper display names and capitals for client-facing text
+  const VNAME = { bizdoc: 'BizDoc', medialy: 'Medialy', subt: 'SUBT', iotics: 'Iotics', hub: 'Hamzury Hub', iwiin: 'IWIIN' };
+  const VORDER = ['bizdoc', 'medialy', 'subt', 'iotics', 'hub', 'iwiin'];
+  const cap = t => { t = String(t || ''); return t.charAt(0).toUpperCase() + t.slice(1); };
+  const sent = t => String(t || '').replace(/(^|[.!?:]\s+)([a-z])/g, (m, a, b) => a + b.toUpperCase()).replace(/\bhamzury id\b/gi, 'Hamzury ID');
+  // which ventures this proposal involves: roadmap items first, then any venture named in the written text
+  function ventureIntro(d) {
+    const keys = [];
+    (d.levels || []).forEach(l => (l.items || []).forEach(it => { if (VNAME[it.venture] && !keys.includes(it.venture)) keys.push(it.venture); }));
+    const words = ' ' + ((d.advice || '') + ' ' + (d.management || '')).toLowerCase().replace(/[^a-z]+/g, ' ') + ' ';
+    VORDER.forEach(k => { if (!keys.includes(k) && words.includes(k === 'hub' ? ' hamzury hub ' : ' ' + k + ' ')) keys.push(k); });
+    if (!keys.length) return null;
+    const V = (window.HZ && window.HZ.ventures) || {};
+    return {
+      intro: `Hamzury Holding brings six expert ventures together under one team: ${VORDER.slice(0, -1).map(k => VNAME[k]).join(', ')} and ${VNAME.iwiin}. Each venture focuses on one area, so you work with specialists while one team looks after you. This proposal is delivered by:`,
+      rows: keys.map(k => ({ key: k, name: VNAME[k], area: V[k] ? cap(V[k].area) : '', line: V[k] ? cap(V[k].line) : '' })),
+    };
+  }
   const LOGO = (document.currentScript && document.currentScript.src || '').replace(/proposal\.js.*$/, 'img/hamzury.png');
 
   let logoP = null;
@@ -38,7 +56,7 @@
   function rule(ctx, W) { ctx.fillStyle = C.bronze; ctx.fillRect(0, 0, W * 0.23, 12); ctx.fillStyle = C.choc; ctx.fillRect(W * 0.23, 0, W, 12); }
   function hr(ctx, x, y, w) { ctx.fillStyle = C.line; ctx.fillRect(x, y, w, 2); }
   function journey(ctx, x, y, w, here) {
-    const steps = ['awareness', 'strategy', 'structure', 'systems', 'success'], gap = w / (steps.length - 1);
+    const steps = ['Awareness', 'Strategy', 'Structure', 'Systems', 'Success'], gap = w / (steps.length - 1);
     ctx.fillStyle = C.line; ctx.fillRect(x, y - 1, w, 3);
     ctx.fillStyle = C.choc; ctx.fillRect(x, y - 1, gap * here, 3);
     steps.forEach((s, k) => {
@@ -48,7 +66,7 @@
       ctx.fillText(s, cx, y + 50); ctx.textAlign = 'left';
     });
     ctx.font = F(600, 22); ctx.fillStyle = C.choc; ctx.textAlign = here === 0 ? 'left' : 'center';
-    ctx.fillText('you are here', x + gap * here, y - 28); ctx.textAlign = 'left';
+    ctx.fillText('You are here', x + gap * here, y - 28); ctx.textAlign = 'left';
   }
   function canvas(W, H) { const c = document.createElement('canvas'); c.width = W; c.height = H; const ctx = c.getContext('2d'); ctx.fillStyle = C.milk; ctx.fillRect(0, 0, W, H); return [c, ctx]; }
 
@@ -61,18 +79,18 @@
     if (img) ctx.drawImage(img, M, 78, 220, 220 * img.height / img.width);
     ctx.font = F(600, 24); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText(d.date, W - M, 104); ctx.textAlign = 'left';
     let y = 220;
-    ctx.font = F(600, 28); ctx.fillStyle = C.choc; ctx.fillText('my success journey', M, y); y += 78;
-    y = text(ctx, `${d.first}, you took the first step.`, M, y, CW, F(700, 70), C.ink, 80, 3) + 14;
-    y = text(ctx, `you stopped, looked honestly at ${d.business || 'your business'} and asked for a clear way forward. that is how growth starts, and we are proud to build it with you.`, M, y, CW, F(400, 33), C.ink2, 48, 4) + 34;
+    ctx.font = F(600, 28); ctx.fillStyle = C.choc; ctx.fillText('My success journey', M, y); y += 78;
+    y = text(ctx, `${cap(d.first)}, you took the first step.`, M, y, CW, F(700, 70), C.ink, 80, 3) + 14;
+    y = text(ctx, `You stopped, looked honestly at ${d.business || 'your business'} and asked for a clear way forward. That is how growth starts, and we are proud to build it with you.`, M, y, CW, F(400, 33), C.ink2, 48, 4) + 34;
     hr(ctx, M, y, CW); y += 58;
-    ctx.font = F(600, 24); ctx.fillStyle = C.slate; ctx.fillText('our recommendation', M, y); y += 46;
+    ctx.font = F(600, 24); ctx.fillStyle = C.slate; ctx.fillText('Our recommendation', M, y); y += 46;
     y = text(ctx, d.advice, M, y, CW, F(500, 32), C.ink, 46, Math.max(2, Math.floor((960 - y) / 46))) + 34;
-    ctx.font = F(600, 24); ctx.fillStyle = C.slate; ctx.fillText('your next step', M, y); y += 46;
-    text(ctx, 'open your roadmap and begin with the first level.', M, y, CW, F(500, 32), C.choc, 46, 2);
+    ctx.font = F(600, 24); ctx.fillStyle = C.slate; ctx.fillText('Your next step', M, y); y += 46;
+    text(ctx, 'Open your roadmap and begin with the first level.', M, y, CW, F(500, 32), C.choc, 46, 2);
     journey(ctx, M + 10, 1150, CW - 20, 1);
     hr(ctx, M, 1238, CW);
     ctx.font = F(700, 26); ctx.fillStyle = C.ink; ctx.fillText(d.ref, M, 1288);
-    ctx.font = F(500, 24); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText('track it at hamzury.com', W - M, 1288); ctx.textAlign = 'left';
+    ctx.font = F(500, 24); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText('Track it at hamzury.com', W - M, 1288); ctx.textAlign = 'left';
     return new Promise(res => cv.toBlob(res, 'image/png'));
   }
 
@@ -81,7 +99,7 @@
     const img = await ready();
     const W = 1240, H = 1754, M = 110, CW = W - M * 2, BOTTOM = H - 135;
     const pages = []; let cv, ctx, y;
-    const footer = n => { hr(ctx, M, H - 110, CW); ctx.font = F(500, 22); ctx.fillStyle = C.slate; ctx.fillText(`hamzury · proposal for ${d.business || d.name} · ${d.ref}`, M, H - 68); ctx.textAlign = 'right'; ctx.fillText('page ' + n, W - M, H - 68); ctx.textAlign = 'left'; };
+    const footer = n => { hr(ctx, M, H - 110, CW); ctx.font = F(500, 22); ctx.fillStyle = C.slate; ctx.fillText(`Hamzury · Proposal for ${d.business || d.name} · ${d.ref}`, M, H - 68); ctx.textAlign = 'right'; ctx.fillText('Page ' + n, W - M, H - 68); ctx.textAlign = 'left'; };
     const page = () => { if (cv) { footer(pages.length + 1); pages.push(cv); } [cv, ctx] = canvas(W, H); rule(ctx, W); if (img) ctx.drawImage(img, M, 70, 190, 190 * img.height / img.width); y = 200; };
     const need = h => { if (y + h > BOTTOM) page(); };
     const label = s => { need(90); ctx.font = F(600, 24); ctx.fillStyle = C.choc; ctx.fillText(s, M, y); y += 44; };
@@ -90,29 +108,42 @@
     };
     page();
     ctx.font = F(600, 24); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText(d.date + ' · ' + d.ref, W - M, 100); ctx.textAlign = 'left';
-    ctx.font = F(600, 26); ctx.fillStyle = C.choc; ctx.fillText('proposal for ' + (d.business || d.name), M, y); y += 76;
-    para(`${d.first}, you took the first step.`, F(700, 60), C.ink, 70); y += 6;
-    para(`you stopped, looked honestly at ${d.business || 'your business'} and asked for a clear way forward. that is how growth starts. this proposal is built only on what you told us, and we are proud to build it with you.`, F(400, 30), C.ink2, 46);
+    ctx.font = F(600, 26); ctx.fillStyle = C.choc; ctx.fillText('Proposal for ' + (d.business || d.name), M, y); y += 76;
+    para(`${cap(d.first)}, you took the first step.`, F(700, 60), C.ink, 70); y += 6;
+    para(`You stopped, looked honestly at ${d.business || 'your business'} and asked for a clear way forward. That is how growth starts. This proposal is built only on what you told us, and we are proud to build it with you.`, F(400, 30), C.ink2, 46);
     y += 14; journey(ctx, M + 10, y + 46, CW - 20, 1); y += 130; hr(ctx, M, y, CW); y += 56;
-    label('our recommendation'); para(d.advice, F(500, 30), C.ink, 45); y += 18;
-    label('how we work with you'); d.promises.forEach(s => para(s, F(400, 27), C.ink2, 40)); y += 12;
-    if (d.management) { label('after delivery'); para(d.management); }
+    label('Our recommendation'); para(d.advice, F(500, 30), C.ink, 45); y += 18;
+    const vi = ventureIntro(d);
+    if (vi) {
+      label('Who will work with you'); para(vi.intro, F(400, 27), C.ink2, 40); y += 6;
+      vi.rows.forEach(r => {
+        ctx.font = F(400, 25); const sub = wrap(ctx, r.area + (r.line ? ' · ' + r.line : ''), CW - 30);
+        need(46 + sub.length * 34); y += 8;
+        ctx.fillStyle = VC[r.key] || C.slate; ctx.fillRect(M, y - 20, 14, 14);
+        ctx.font = F(700, 29); ctx.fillStyle = C.ink; ctx.fillText(r.name, M + 30, y);
+        ctx.font = F(400, 25); ctx.fillStyle = C.ink2; sub.forEach(l => { y += 34; ctx.fillText(l, M + 30, y); });
+        y += 24;
+      });
+      y += 12;
+    }
+    label('How we work with you'); d.promises.forEach(s => para(sent(s), F(400, 27), C.ink2, 40)); y += 12;
+    if (d.management) { label('After delivery'); para(d.management); }
     // roadmap: the journey, no prices
     page();
-    ctx.font = F(600, 26); ctx.fillStyle = C.choc; ctx.fillText('your journey to scale', M, y); y += 76;
-    para(`this is the journey we recommend for ${d.business || 'your business'}. implemented in order, each level builds on the one before it, so the business grows on solid ground. begin with level one at hamzury.com, using your id ${d.ref}.`, F(400, 28), C.ink2, 42); y += 40;
+    ctx.font = F(600, 26); ctx.fillStyle = C.choc; ctx.fillText('Your journey to scale', M, y); y += 76;
+    para(`This is the journey we recommend for ${d.business || 'your business'}. Implemented in order, each level builds on the one before it, so the business grows on solid ground. Begin with level one at hamzury.com, using your Hamzury ID ${d.ref}.`, F(400, 28), C.ink2, 42); y += 40;
     d.levels.forEach((lv, k) => {
       need(130);
       ctx.beginPath(); ctx.arc(M + 26, y - 12, 26, 0, Math.PI * 2); ctx.fillStyle = C.choc; ctx.fill();
       ctx.font = F(700, 25); ctx.fillStyle = C.white; ctx.textAlign = 'center'; ctx.fillText(String(k + 1), M + 26, y - 3); ctx.textAlign = 'left';
-      ctx.font = F(700, 38); ctx.fillStyle = C.ink; ctx.fillText(lv.name, M + 76, y); y += 40;
-      ctx.font = F(400, 25); ctx.fillStyle = C.slate; ctx.fillText(lv.meaning, M + 76, y); y += 30;
+      ctx.font = F(700, 38); ctx.fillStyle = C.ink; ctx.fillText(cap(lv.name), M + 76, y); y += 40;
+      ctx.font = F(400, 25); ctx.fillStyle = C.slate; ctx.fillText(sent(lv.meaning), M + 76, y); y += 30;
       lv.items.forEach(it => {
-        ctx.font = F(400, 23); const why = it.why ? wrap(ctx, it.why, CW - 100).slice(0, 2) : [];
+        ctx.font = F(400, 23); const why = it.why ? wrap(ctx, cap(it.why), CW - 100).slice(0, 2) : [];
         need(56 + why.length * 30); hr(ctx, M + 76, y, CW - 76); y += 40;
         ctx.fillStyle = VC[it.venture] || C.slate; ctx.fillRect(M + 76, y - 18, 12, 12);
-        ctx.font = F(600, 28); ctx.fillStyle = C.ink; ctx.fillText(wrap(ctx, it.name, CW - 300)[0], M + 100, y);
-        ctx.font = F(500, 22); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText(it.vname, W - M, y); ctx.textAlign = 'left';
+        ctx.font = F(600, 28); ctx.fillStyle = C.ink; ctx.fillText(wrap(ctx, cap(it.name), CW - 300)[0], M + 100, y);
+        ctx.font = F(500, 22); ctx.fillStyle = C.slate; ctx.textAlign = 'right'; ctx.fillText(VNAME[it.venture] || cap(it.vname), W - M, y); ctx.textAlign = 'left';
         ctx.font = F(400, 23); ctx.fillStyle = C.ink2; why.forEach(l => { y += 30; ctx.fillText(l, M + 100, y); });
         y += 8;
       });
@@ -156,5 +187,5 @@
     return 'downloaded';
   }
 
-  window.HZProposal = { card, pdf, save };
+  window.HZProposal = { card, pdf, save, ventureIntro, cap, sent, VNAME };
 })();

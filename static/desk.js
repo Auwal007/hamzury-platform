@@ -173,7 +173,7 @@
       head(`${c.business || c.name}`, `${c.ref} · ${c.name} · ${c.phone}${c.email ? ' · ' + c.email : ''}`, badge(c.status) + badge(c.update_state) + (c.intake.route === 'quick' ? '<span class="badge badge-late">urgent</span>' : '') + '<button class="sbtn primary" id="waBtn">message on whatsapp</button>') +
       `<div class="cols">
         <div>
-          <div class="panel"><div class="panel-h"><h2>their answers</h2><span class="tiny muted">${esc(day(c.created_at))}</span></div><div class="panel-b"><dl class="kv">${intakeRows}</dl></div></div>
+          <div class="panel"><div class="panel-h responses-head"><h2>their answers</h2><div class="row"><span class="tiny muted">${esc(day(c.created_at))}</span><a class="sbtn" href="/api/admin/clients/${c.id}/responses" download>download all responses</a></div></div><div class="panel-b"><p class="tiny muted mb-12">download includes the questionnaire, package follow-up and onboarding answers in a text file.</p><dl class="kv">${intakeRows}</dl></div></div>
           <div class="panel"><div class="panel-h"><h2>relationship</h2></div><div class="panel-b">
             <div class="grid2"><div class="dfield"><label for="cStatus">status</label><select id="cStatus">${['new', 'reviewing', 'recommended', 'active', 'completed', 'closed'].map(s => `<option ${s === c.status ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
             <div class="dfield"><label for="cOwner">accountable contact</label><select id="cOwner"><option value="">not set</option>${staffList.filter(u => u.active).map(u => `<option value="${u.id}" ${u.id === c.owner_user_id ? 'selected' : ''}>${esc(u.display_name)}</option>`).join('')}</select></div></div>
@@ -230,10 +230,10 @@
     if ($('recPdf')) $('recPdf').addEventListener('click', async () => {
       const LV = ['minimum', 'standard', 'protection', 'scaling'];
       const MEAN = { renewals: 'keep everything current as you grow: renewals, filings, updates and changes.', minimum: 'the essentials your business needs to run properly.', standard: 'what makes you organised, trusted and easy to buy from.', protection: 'protect what you have built: records, data, money and people.', scaling: 'systems that let the business grow beyond you.' };
-      const d = { first: c.name.split(' ')[0].toLowerCase(), name: c.name, business: c.business, ref: c.ref,
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).toLowerCase(),
+      const d = { first: c.name.trim().split(/\s+/)[0], name: c.name, business: c.business, ref: c.ref,
+        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
         advice: rec.advice, management: rec.management || '',
-        promises: ['you see every price before you decide. nothing starts until you choose.', 'one team looks after you. follow every step with your hamzury id, and hear from us within 48 hours while work is active.', 'we are honest about what we can promise. we never guarantee grants, income or growth.'],
+        promises: ['You see every price before you decide. Nothing starts until you choose.', 'One team looks after you. Follow every step with your Hamzury ID, and hear from us within 48 hours while work is active.', 'We are honest about what we can promise. We never guarantee grants, income or growth.'],
         levels: [...LV, 'renewals'].map(L => ({ name: L === 'renewals' ? 'renewals and changes' : L, meaning: MEAN[L], items: rec.items.filter(x => (x.level || 'standard') === L).sort((p, q) => p.priority - q.priority)
           .map(x => { const pk = packages.find(p => p.id === x.package_id) || {}; return { name: x.name, venture: x.venture, vname: x.venture === 'hub' ? 'hamzury hub' : x.venture, why: x.note || pk.summary || '' }; }) })).filter(l => l.items.length) };
       try { const blob = await window.HZProposal.pdf(d); await window.HZProposal.save(blob, `hamzury-proposal-${c.ref.toLowerCase()}.pdf`, 'hamzury proposal'); toast('pdf ready. attach it on whatsapp.'); }

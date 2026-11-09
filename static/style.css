@@ -282,6 +282,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.025em;line-height:1.12}
 .panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
 .panel-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
 .panel-h h2{font-size:17px}
+.responses-head{flex-wrap:wrap}
 .panel-b{padding:16px 20px}
 table{width:100%;border-collapse:collapse;font-size:14.5px}
 th{text-align:left;font-size:13px;font-weight:600;color:var(--slate);padding:11px 16px;background:#fcfaf6;border-bottom:1px solid var(--line);white-space:nowrap}
@@ -633,6 +634,9 @@ a.do:active{transform:scale(.99)}
 .vhero h1{text-wrap:balance}
 .card{border-radius:16px}
 .p-big{font-size:19px!important;line-height:1.55;font-weight:500}
+.p-ventures{list-style:none;margin:14px 0 0;padding:0}
+.p-ventures li{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px 0;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
+.p-ventures li:first-child{border-top:0;padding-top:0}
 .p-list{list-style:none;margin:0;padding:0}
 .p-list li{position:relative;padding:10px 0 10px 22px;font-size:16px;color:var(--ink-2);border-top:1px solid var(--line)}
 .p-list li:first-child{border-top:0;padding-top:4px}

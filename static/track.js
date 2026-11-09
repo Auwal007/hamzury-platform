@@ -331,28 +331,29 @@
   function proposalScreen() {
     if (!me.recommendation) return homeScreen();
     setTop('home', 'home'); updateCart(false);
-    const r = me.recommendation, first = me.name.split(' ')[0].toLowerCase();
+    const r = me.recommendation, P = window.HZProposal, first = P.cap(me.name.trim().split(/\s+/)[0]), vi = P.ventureIntro(proposalData());
     app.innerHTML = `<div class="fade-in proposal">
-      <span class="eyebrow">${esc(me.business ? 'proposal for ' + me.business : 'your proposal')}</span>
+      <span class="eyebrow">${esc(me.business ? 'Proposal for ' + me.business : 'Your proposal')}</span>
       <h1 class="hello">${esc(first)}, you took the first step.</h1>
-      <p class="lead-p">you stopped, looked honestly at ${esc(me.business || 'your business')} and asked for a clear way forward. that is how growth starts. we are proud to build it with you.</p>
-      <div class="journey-mini" aria-label="your journey: you are at strategy">${STAGES.map((s, k) => `<span class="${k < 1 ? 'done' : k === 1 ? 'now' : ''}">${esc(s)}</span>`).join('')}</div>
-      <section class="p-sec"><h2>our recommendation</h2><p class="p-big">${esc(r.advice)}</p></section>
-      <section class="p-sec"><h2>how we work with you</h2><ul class="p-list">${promises().map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
-      ${r.management ? `<section class="p-sec"><h2>after delivery</h2><p>${esc(r.management)}</p></section>` : ''}
-      <button class="btn btn-primary btn-block mt-32" data-go="roadmap">see my roadmap</button>
-      <div class="p-save"><button class="btn btn-ghost" type="button" id="saveCard">save to my phone</button><button class="btn btn-ghost" type="button" id="savePdf">full proposal (pdf)</button></div>
-      <p class="tiny muted mt-12">your proposal stays here too. sign in any time with ${esc(me.ref)}.</p>
+      <p class="lead-p">You stopped, looked honestly at ${esc(me.business || 'your business')} and asked for a clear way forward. That is how growth starts. We are proud to build it with you.</p>
+      <div class="journey-mini" aria-label="Your journey: you are at strategy">${STAGES.map((s, k) => `<span class="${k < 1 ? 'done' : k === 1 ? 'now' : ''}">${esc(P.cap(s))}</span>`).join('')}</div>
+      <section class="p-sec"><h2>Our recommendation</h2><p class="p-big">${esc(r.advice)}</p></section>
+      ${vi ? `<section class="p-sec"><h2>Who will work with you</h2><p>${esc(vi.intro)}</p><ul class="p-ventures">${vi.rows.map(v => `<li><span class="vtag v-${esc(v.key)}">${esc(v.name)}</span><span>${esc(v.area)}${v.line ? ' · <i>' + esc(v.line) + '</i>' : ''}</span></li>`).join('')}</ul></section>` : ''}
+      <section class="p-sec"><h2>How we work with you</h2><ul class="p-list">${promises().map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
+      ${r.management ? `<section class="p-sec"><h2>After delivery</h2><p>${esc(r.management)}</p></section>` : ''}
+      <button class="btn btn-primary btn-block mt-32" data-go="roadmap">See my roadmap</button>
+      <div class="p-save"><button class="btn btn-ghost" type="button" id="saveCard">Save to my phone</button><button class="btn btn-ghost" type="button" id="savePdf">Full proposal (PDF)</button></div>
+      <p class="tiny muted mt-12">Your proposal stays here too. Sign in any time with ${esc(me.ref)}.</p>
     </div>`;
     $('saveCard').addEventListener('click', () => keepFile('card'));
     $('savePdf').addEventListener('click', () => keepFile('pdf'));
   }
-  const promises = () => ['you see every price before you decide. nothing starts until you choose.', `one team looks after you. follow every step with your hamzury id, and hear from us within ${me.review_hours} hours while work is active.`, 'we are honest about what we can promise. we never guarantee grants, income or growth.'];
+  const promises = () => ['You see every price before you decide. Nothing starts until you choose.', `One team looks after you. Follow every step with your Hamzury ID, and hear from us within ${me.review_hours} hours while work is active.`, 'We are honest about what we can promise. We never guarantee grants, income or growth.'];
   function proposalData() {
     const r = me.recommendation;
     return {
-      first: me.name.split(' ')[0].toLowerCase(), name: me.name, business: me.business, ref: me.ref,
-      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).toLowerCase(),
+      first: me.name.trim().split(/\s+/)[0], name: me.name, business: me.business, ref: me.ref,
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
       advice: r.advice, management: r.management || '', promises: promises(),
       levels: ALL.map(L => ({ name: LNAME(L), meaning: MEANING[L], items: roadmapOrder(items().filter(x => (x.level || 'standard') === L && !groupTaken(x)))
         .map(x => ({ name: x.package.name, venture: x.package.venture, vname: vname(x.package.venture), why: x.note || x.package.summary || '' })) })).filter(l => l.items.length),

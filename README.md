@@ -21,6 +21,8 @@
 
 venture staff see only the packages for their venture. only holding confirms payments and delivery.
 
+On **clients > open a client > their answers**, **download all responses** saves a UTF-8 text file with the client's contact details, original questionnaire answers, package follow-up answers, onboarding responses and uploaded-file names. Holding owners and admins can download it. Uploaded documents remain available through their individual download links on the client page.
+
 ## version 6: built to convert
 
 - **home:** a sales-grade hook with the client's business as the hero, an "ai and automation, explained simply" section, and venture tiles that **open in place** with services, "start here with [venture]" and "visit the [venture] site".
