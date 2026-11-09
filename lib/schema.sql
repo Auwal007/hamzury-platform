@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash text COLLATE "C" NOT NULL, role text COLLATE "C" NOT NULL, venture text COLLATE "C", active integer NOT NULL DEFAULT 1,
   phone text COLLATE "C" NOT NULL DEFAULT '', mfa_secret text COLLATE "C" NOT NULL DEFAULT '', mfa_pending text COLLATE "C" NOT NULL DEFAULT '',
   mfa_last_step bigint NOT NULL DEFAULT -1, created_at text COLLATE "C" NOT NULL DEFAULT now_ts());
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email text COLLATE "C";
+CREATE UNIQUE INDEX IF NOT EXISTS ux_users_email ON users(lower(email)) WHERE email IS NOT NULL;
 CREATE TABLE IF NOT EXISTS sessions (
   token_hash text COLLATE "C" PRIMARY KEY, user_id integer NOT NULL REFERENCES users(id), csrf text COLLATE "C" NOT NULL, expires_at bigint NOT NULL);
 CREATE TABLE IF NOT EXISTS clients (

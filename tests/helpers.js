@@ -15,7 +15,7 @@ export async function makeApp(env = {}) {
   const storage = openStorage({ HAMZURY_FILES: path.join(dir, 'files') });
   const app = createApp({ db, storage, env: {
     HAMZURY_ENV: 'development', HAMZURY_REQUIRE_STAFF_MFA: '0', HAMZURY_REQUIRE_UPLOAD_SCAN: '0',
-    HAMZURY_ADMIN_PASSWORD: PASS, HAMZURY_SECRET: SECRET, HAMZURY_BANK_DETAILS: 'sample bank details for testing', ...env } });
+    HAMZURY_ADMIN_EMAIL: 'owner@example.test', HAMZURY_ADMIN_PASSWORD: PASS, HAMZURY_SECRET: SECRET, HAMZURY_BANK_DETAILS: 'sample bank details for testing', ...env } });
   app.dir = dir;
   // run sql directly, like the old tests did with app.connect()
   app.sql = (sql, ...params) => db.tx(c => c.all(sql, ...params));
@@ -58,7 +58,8 @@ export class Client {
 
 export async function staff(app, username = 'owner', password = PASS) {
   const t = new Client(app);
-  const r = await t.post('/api/login', { json: { username, password } });
+  const email = username.includes('@') ? username : username === 'owner' ? app.cfg.ADMIN_EMAIL : `${username}@example.test`;
+  const r = await t.post('/api/login', { json: { email, password } });
   if (r.status !== 200) throw new Error(`login ${r.status} ${r.text}`);
   t.headers['X-CSRF-Token'] = r.json().csrf;
   return t;

@@ -90,7 +90,7 @@ npm run dev
 - website: http://127.0.0.1:8000/
 - start here: /start
 - client app: /track
-- staff desk: /admin (username `owner`, the password you set)
+- staff desk: /admin (email from `HAMZURY_ADMIN_EMAIL`, the password you set)
 
 with no `DATABASE_URL` or `CLOUDINARY_URL` in `.env`, local runs use an embedded postgres in `data/pglite` and keep files in `data/files`. add them to work against supabase and cloudinary.
 
@@ -99,6 +99,7 @@ with no `DATABASE_URL` or `CLOUDINARY_URL` in `.env`, local runs use an embedded
 | variable | what it does |
 |---|---|
 | `HAMZURY_ADMIN_PASSWORD`, `HAMZURY_SECRET` | required. owner password (12+) and app secret (32+) |
+| `HAMZURY_ADMIN_EMAIL` | owner login email, e.g. `admin@hamzury.com`; assigned once to a legacy owner without an email |
 | `DATABASE_URL` | the supabase connection string (transaction pooler, port 6543) |
 | `CLOUDINARY_URL` | `cloudinary://key:secret@cloud`, for private file storage |
 | `HAMZURY_PAYSTACK_SECRET_KEY` | turns on paystack checkout. add the webhook `https://your-domain/api/paystack/webhook` in paystack |

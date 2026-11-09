@@ -35,6 +35,7 @@ The free Cloudinary plan limits raw files to **10 MB**, while the app accepts up
 | `DATABASE_URL` | from step 1 |
 | `CLOUDINARY_URL` | from step 2 |
 | `HAMZURY_ADMIN_PASSWORD` | 12+ characters. Used only to create the first owner |
+| `HAMZURY_ADMIN_EMAIL` | `admin@hamzury.com` (or your chosen owner login email) |
 | `HAMZURY_SECRET` | 32+ random characters. Keep it stable: it encrypts staff authenticator secrets and signs upload tickets |
 | `HAMZURY_PUBLIC_BASE_URL` | your HTTPS address, e.g. `https://hamzury.com` |
 | `HAMZURY_SECURE_COOKIES` | `1` |
@@ -60,9 +61,9 @@ Every upload still passes the content checks either way: the contents must match
 
 ## 4. Secure accounts and approve the business setup
 
-1. Sign in at `/admin` as `owner`. Under **account security**, add the setup key to an authenticator app and confirm a code. Enrolling signs out every session; wait for the next code before signing in again.
+1. Sign in at `/admin` with the email in `HAMZURY_ADMIN_EMAIL` and the existing owner password. Under **account security**, add the setup key to an authenticator app and confirm a code. Enrolling signs out every session; wait for the next code before signing in again.
 2. Change the owner's bootstrap password under **account security**.
-3. Add individual staff accounts. Production blocks client and payment records until each staff member enrolls an authenticator.
+3. Add individual staff accounts with unique login emails. For existing staff without email addresses, use **team > set login email**. Production blocks client and payment records until each staff member enrolls an authenticator.
 4. Under **catalogue**, review and approve real prices. Proposed prices are never approved automatically.
 5. Configure the registered invoicing entity and finance settings. Confirm tax treatment with the responsible finance adviser.
 6. Have the draft terms, privacy notice and operating policies approved by the appropriate advisers, then update the displayed text and `TERMS_VERSION` in `lib/app.js` together. This is a launch gate for real client use.
@@ -70,9 +71,9 @@ Every upload still passes the content checks either way: the contents must match
 An owner can reset another staff member's password from **team**. For owner recovery or a lost authenticator, a trusted operator runs this on their own computer with `DATABASE_URL` set in `.env`:
 
 ```sh
-node tools/manage.js reset-password owner
+node tools/manage.js reset-password admin@hamzury.com
 # only after verifying identity, if the authenticator was also lost:
-node tools/manage.js reset-password owner --reset-mfa
+node tools/manage.js reset-password admin@hamzury.com --reset-mfa
 ```
 
 The password is typed privately, not passed as an argument. Recovery is audited and signs out every session.
@@ -116,3 +117,11 @@ npm run dev               # http://127.0.0.1:8000
 ```
 
 Without `DATABASE_URL` and `CLOUDINARY_URL`, local runs use an embedded Postgres in `data/pglite` and files in `data/files`. Set them in `.env` to work against the real services.
+
+## Email sign-in migration
+
+Staff sign in using email and password, with the same authenticator when enabled. `HAMZURY_CONTACT_EMAIL` is only the public contact address. Existing usernames remain internal identifiers for audit records and recovery; username sign-in is no longer accepted.
+
+Set `HAMZURY_ADMIN_EMAIL=admin@hamzury.com` in the local `.env` and in Vercel environment variables before deploying this version. Restart the local server or redeploy Vercel, and refresh the dashboard. The schema adds a case-insensitive unique email index. If automatic schema migration is disabled, apply the updated `lib/schema.sql` before deployment.
+
+The owner email is assigned from configuration only when the existing owner has no email. Subsequent environment changes do not overwrite an assigned email. Change it through **account security**, or recover with `node tools/manage.js set-email owner admin@hamzury.com`. Passwords, MFA secrets, roles and staff IDs are preserved. Assigning/changing an email revokes existing sessions. Email is a login identifier; this change does not send verification or password-reset messages.

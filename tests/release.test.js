@@ -76,7 +76,7 @@ test('password change revokes every session and recovery works', async () => {
   assert.equal((await one.post('/api/account/password', { json: { current_password: 'wrong', new_password: 'new-unique-password-123' } })).status, 401);
   assert.equal((await one.post('/api/account/password', { json: { current_password: PASS, new_password: 'new-unique-password-123' } })).status, 200);
   assert.equal((await one.get('/api/me')).status, 401); assert.equal((await two.get('/api/me')).status, 401);
-  assert.equal((await new Client(app).post('/api/login', { json: { username: 'owner', password: PASS } })).status, 401);
+  assert.equal((await new Client(app).post('/api/login', { json: { username: 'owner', email: 'owner@example.test', password: PASS } })).status, 401);
   const current = await staff(app, 'owner', 'new-unique-password-123');
   await resetPassword(app.db, 'owner', 'recovered-password-123');
   assert.equal((await current.get('/api/me')).status, 401);
@@ -86,7 +86,7 @@ test('password change revokes every session and recovery works', async () => {
 test('owner can reset staff, but staff cannot reset the owner', async () => {
   const app = await makeApp();
   const admin = await staff(app);
-  const uid = (await admin.post('/api/users', { json: { username: 'finance-test', display_name: 'Finance', role: 'finance', password: 'finance-original-password' } })).json().id;
+  const uid = (await admin.post('/api/users', { json: { username: 'finance-test', email: 'finance-test@example.test', display_name: 'Finance', role: 'finance', password: 'finance-original-password' } })).json().id;
   const finance = await staff(app, 'finance-test', 'finance-original-password');
   const payload = { owner_password: PASS, new_password: 'replacement-staff-password' };
   assert.equal((await finance.post('/api/users/1/password', { json: payload })).status, 403);
@@ -111,10 +111,10 @@ test('required mfa: setup, encryption, replay and recovery', async () => {
   assert.equal((await admin.get('/api/me')).status, 401);
   assert.notEqual((await app.sql('SELECT mfa_secret FROM users'))[0].mfa_secret, key);
   const t = new Client(app);
-  assert.equal((await t.post('/api/login', { json: { username: 'owner', password: PASS } })).status, 401);
-  assert.equal((await t.post('/api/login', { json: { username: 'owner', password: PASS, otp: otp(clock) } })).status, 401);  // the code was already used
+  assert.equal((await t.post('/api/login', { json: { username: 'owner', email: 'owner@example.test', password: PASS } })).status, 401);
+  assert.equal((await t.post('/api/login', { json: { username: 'owner', email: 'owner@example.test', password: PASS, otp: otp(clock) } })).status, 401);  // the code was already used
   clock += 30;
-  const login = await t.post('/api/login', { json: { username: 'owner', password: PASS, otp: otp(clock) } });
+  const login = await t.post('/api/login', { json: { username: 'owner', email: 'owner@example.test', password: PASS, otp: otp(clock) } });
   assert.equal(login.status, 200);
   t.headers['X-CSRF-Token'] = login.json().csrf;
   assert.equal((await t.get('/api/admin/clients')).status, 200);

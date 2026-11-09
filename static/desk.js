@@ -39,7 +39,7 @@
     const headers = { ...(opts.method && opts.method !== 'GET' ? { 'X-CSRF-Token': csrf } : {}), ...(isForm || !opts.body ? {} : { 'Content-Type': 'application/json' }) };
     const r = await fetch(path, { credentials: 'same-origin', ...opts, headers, body: isForm ? opts.body : (opts.body ? JSON.stringify(opts.body) : undefined) });
     const d = await r.json().catch(() => ({}));
-    const accountChallenge = path.startsWith('/api/account/') || /^\/api\/users\/\d+\/password$/.test(path);
+    const accountChallenge = path.startsWith('/api/account/') || /^\/api\/users\/\d+\/(password|email)$/.test(path);
     if (r.status === 401 && path !== '/api/login' && !accountChallenge) { showLogin(); throw new Error('please sign in'); }
     if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : (Array.isArray(d.detail) ? d.detail.map(x => (x.loc || []).slice(-1)[0] + ': ' + x.msg).join('; ') : 'request failed'));
     return d;
@@ -67,7 +67,7 @@
   function showLogin() { $('deskView').hidden = true; $('loginView').hidden = false; }
   $('loginForm').addEventListener('submit', async e => {
     e.preventDefault(); $('le').hidden = true; $('lb').disabled = true;
-    try { const d = await api('/api/login', { method: 'POST', body: { username: $('lu').value, password: $('lp').value, otp: $('lotp').value } }); me = d.user; csrf = d.csrf; $('lp').value = ''; $('lotp').value = ''; start(); }
+    try { const d = await api('/api/login', { method: 'POST', body: { email: $('lu').value.trim(), password: $('lp').value, otp: $('lotp').value } }); me = d.user; csrf = d.csrf; $('lp').value = ''; $('lotp').value = ''; start(); }
     catch (ex) { $('le').textContent = ex.message; $('le').hidden = false; }
     $('lb').disabled = false;
   });
@@ -784,10 +784,10 @@
     const owner = me.role === 'holding_owner';
     main().innerHTML = head('team', 'holding staff see every client. venture staff sign in at /admin and see only their venture\'s work. finance sees money only.', owner ? '<button class="sbtn primary" id="addStaff">add staff</button>' : '') +
       `<div class="panel"><div class="tbl"><table><thead><tr><th>name</th><th>role</th><th>venture</th><th>access</th><th></th></tr></thead><tbody>
-      ${staffList.map(u => `<tr><td><b>${esc(u.display_name)}</b><div class="tiny muted">@${esc(u.username)}</div></td><td class="small">${esc(label(u.role))}</td><td>${u.venture ? vtag(u.venture) : u.role === 'finance' ? 'finance' : 'holding'}${u.phone ? `<div class="tiny muted">${esc(u.phone)}</div>` : ''}</td><td>${u.active ? badge('active') : badge('closed')}</td>
-        <td>${owner && u.active && u.id !== me.id ? `<button class="sbtn" data-reset="${u.id}">reset password</button> <button class="sbtn" data-off="${u.id}">remove access</button>` : ''}</td></tr>`).join('')}</tbody></table></div></div>`;
+      ${staffList.map(u => `<tr><td><b>${esc(u.display_name)}</b><div class="tiny muted">${u.email ? esc(u.email) : 'login email needed'}</div></td><td class="small">${esc(label(u.role))}</td><td>${u.venture ? vtag(u.venture) : u.role === 'finance' ? 'finance' : 'holding'}${u.phone ? `<div class="tiny muted">${esc(u.phone)}</div>` : ''}</td><td>${u.active ? badge('active') : badge('closed')}</td>
+        <td>${owner && u.active && u.id !== me.id ? `<button class="sbtn" data-email="${u.id}">set login email</button> <button class="sbtn" data-reset="${u.id}">reset password</button> <button class="sbtn" data-off="${u.id}">remove access</button>` : ''}</td></tr>`).join('')}</tbody></table></div></div>`;
     if ($('addStaff')) $('addStaff').addEventListener('click', () => {
-      modal('add staff', `<form id="sForm"><div class="grid2"><div class="dfield"><label for="sU">username</label><input id="sU" required></div><div class="dfield"><label for="sN">display name</label><input id="sN" required></div></div>
+      modal('add staff', `<form id="sForm"><div class="grid2"><div class="dfield"><label for="sU">login email</label><input id="sU" type="email" autocomplete="off" maxlength="254" required></div><div class="dfield"><label for="sN">display name</label><input id="sN" required></div></div>
         <div class="dfield"><label for="sP">first password (12+ characters)</label><input id="sP" type="password" autocomplete="new-password" required></div>
         <div class="grid2"><div class="dfield"><label for="sR">role</label><select id="sR"><option value="holding_admin">holding admin</option><option value="venture_ceo">venture lead</option><option value="venture_admin">venture staff</option><option value="finance">finance</option></select></div>
         <div class="dfield"><label for="sV">venture</label><select id="sV"><option value="">none</option>${VENTURES.map(v => `<option>${v}</option>`).join('')}</select></div></div>
@@ -796,11 +796,20 @@
         <div class="modal-actions"><button type="button" class="sbtn" data-close>cancel</button><button class="sbtn primary">create</button></div></form>`);
       $('sForm').addEventListener('submit', async e => {
         e.preventDefault();
-        try { await api('/api/users', { method: 'POST', body: { username: $('sU').value, display_name: $('sN').value, password: $('sP').value, role: $('sR').value, venture: $('sR').value.startsWith('venture') ? ($('sV').value || null) : null, phone: $('sPh').value } }); closeModal(); toast('staff added. share the password privately.'); teamView(); }
+        try { await api('/api/users', { method: 'POST', body: { email: $('sU').value.trim(), display_name: $('sN').value, password: $('sP').value, role: $('sR').value, venture: $('sR').value.startsWith('venture') ? ($('sV').value || null) : null, phone: $('sPh').value } }); closeModal(); toast('staff added. share the password privately.'); teamView(); }
         catch (ex) { toast(ex.message, true); }
       });
     });
     main().querySelectorAll('[data-off]').forEach(b => b.addEventListener('click', async () => { try { await api(`/api/users/${b.dataset.off}/deactivate`, { method: 'POST' }); toast('access removed'); teamView(); } catch (ex) { toast(ex.message, true); } }));
+    main().querySelectorAll('[data-email]').forEach(b => b.addEventListener('click', () => {
+      const u = staffList.find(x => x.id === Number(b.dataset.email));
+      modal('set staff login email', `<form id="emailStaffForm"><div class="dfield"><label for="staffEmail">login email</label><input id="staffEmail" type="email" maxlength="254" value="${esc(u.email || '')}" required></div><div class="dfield"><label for="emailOwnerPass">your owner password</label><input id="emailOwnerPass" type="password" autocomplete="current-password" required></div><p>this signs the staff member out. their password and authenticator stay in place.</p><button class="sbtn primary">save login email</button></form>`);
+      $('emailStaffForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        try { await api(`/api/users/${u.id}/email`, { method: 'POST', body: { email: $('staffEmail').value.trim(), owner_password: $('emailOwnerPass').value } }); closeModal(); toast('login email saved'); teamView(); }
+        catch (ex) { toast(ex.message, true); }
+      });
+    }));
     main().querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => {
       modal('reset staff password', `<form id="resetForm"><div class="dfield"><label for="ownerPass">your owner password</label><input id="ownerPass" type="password" autocomplete="current-password" required></div><div class="dfield"><label for="resetPass">new staff password (12+ characters)</label><input id="resetPass" type="password" autocomplete="new-password" minlength="12" maxlength="200" required></div><p>this signs the staff member out of every session. their authenticator stays enabled.</p><button class="sbtn primary">reset password</button></form>`);
       $('resetForm').addEventListener('submit', async e => {
@@ -813,11 +822,17 @@
 
   async function securityView() {
     main().innerHTML = head('account security', 'use a unique password and an authenticator app to protect your staff account.') +
+      `<section class="panel"><h2>login email</h2><form id="emailForm"><div class="dfield"><label for="accountEmail">email address</label><input id="accountEmail" type="email" maxlength="254" autocomplete="email" value="${esc(me.email || '')}" required></div><div class="dfield"><label for="emailPassword">current password</label><input id="emailPassword" type="password" autocomplete="current-password" required></div><button class="sbtn primary">change email and sign out</button></form></section>` +
       `<section class="panel"><h2>change password</h2><form id="passwordForm"><div class="dfield"><label for="currentPass">current password</label><input id="currentPass" type="password" autocomplete="current-password" required></div><div class="dfield"><label for="newPass">new password (12+ characters)</label><input id="newPass" type="password" autocomplete="new-password" minlength="12" maxlength="200" required></div><button class="sbtn primary">change password and sign out</button></form></section>` +
       `<section class="panel"><h2>authenticator</h2>${me.mfa_enabled ? '<p>enabled. enter a fresh code when you sign in. if you lose access, contact the server operator for recovery.</p>' : `<p>${me.mfa_required ? 'set this up before opening client or payment records.' : 'add a second step when signing in.'}</p><form id="mfaSetup"><div class="dfield"><label for="mfaPass">confirm your password</label><input id="mfaPass" type="password" autocomplete="current-password" required></div><button class="sbtn primary">set up authenticator</button></form><div id="mfaKey"></div>`}</section>`;
     $('passwordForm').addEventListener('submit', async e => {
       e.preventDefault();
       try { await api('/api/account/password', { method: 'POST', body: { current_password: $('currentPass').value, new_password: $('newPass').value } }); location.reload(); }
+      catch (ex) { toast(ex.message, true); }
+    });
+    $('emailForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      try { await api('/api/account/email', { method: 'POST', body: { email: $('accountEmail').value.trim(), current_password: $('emailPassword').value } }); location.reload(); }
       catch (ex) { toast(ex.message, true); }
     });
     if ($('mfaSetup')) $('mfaSetup').addEventListener('submit', async e => {

@@ -74,7 +74,7 @@ test('full journey', async () => {
   assert.equal((await admin.patch(`/api/admin/engagements/${eid}`, { json: { status: 'delivered' } })).status, 400);
   assert.equal((await admin.post(`/api/admin/engagements/${eid}/file`, { files: { file: ['run.exe', 'x'] } })).status, 400);
   assert.equal((await admin.post(`/api/admin/engagements/${eid}/file`, { files: { file: ['brand-guide.pdf', '%PDF-1.4 test'] } })).status, 200);
-  await admin.post('/api/users', { json: { username: 'med', display_name: 'medialy ceo', password: 'venture-only-strong-pass', role: 'venture_ceo', venture: 'medialy' } });
+  await admin.post('/api/users', { json: { username: 'med', email: 'med@example.test', display_name: 'medialy ceo', password: 'venture-only-strong-pass', role: 'venture_ceo', venture: 'medialy' } });
   const ven = await staff(app, 'med', 'venture-only-strong-pass');
   assert.equal((await ven.get('/api/admin/clients')).status, 403);
   assert.equal((await ven.get('/api/admin/engagements')).json().length, 1);
@@ -171,8 +171,8 @@ test('assign, report, publish', async () => {
   const o = (await checkout(client, [item])).json();
   await admin.post(`/api/admin/orders/${o.order_id}/confirm`);
   const eid = (await admin.get('/api/admin/engagements')).json()[0].id;
-  const sid = (await admin.post('/api/users', { json: { username: 'subtdev', display_name: 'subt dev', password: 'venture-only-strong-pass', role: 'venture_admin', venture: 'subt' } })).json().id;
-  const mid = (await admin.post('/api/users', { json: { username: 'meddev', display_name: 'medialy dev', password: 'venture-only-strong-pass', role: 'venture_admin', venture: 'medialy' } })).json().id;
+  const sid = (await admin.post('/api/users', { json: { username: 'subtdev', email: 'subtdev@example.test', display_name: 'subt dev', password: 'venture-only-strong-pass', role: 'venture_admin', venture: 'subt' } })).json().id;
+  const mid = (await admin.post('/api/users', { json: { username: 'meddev', email: 'meddev@example.test', display_name: 'medialy dev', password: 'venture-only-strong-pass', role: 'venture_admin', venture: 'medialy' } })).json().id;
   assert.equal((await admin.post(`/api/admin/engagements/${eid}/assign`, { json: { assigned_user_id: mid } })).status, 400);  // wrong venture
   assert.equal((await admin.post(`/api/admin/engagements/${eid}/assign`, { json: { assigned_user_id: sid, due_date: '2026-12-01', brief: 'build the order form' } })).status, 200);
   const ven = await staff(app, 'subtdev', 'venture-only-strong-pass');
@@ -304,7 +304,7 @@ test('answers make a draft and prices need approval', async () => {
   const item = (await me(t)).recommendation.items[0];
   assert.equal(item.package.price_minor, 2500000); assert.equal(item.package.price_status, 'approved');
   // staff without the holding role cannot approve prices
-  assert.equal((await admin.post('/api/users', { json: { username: 'bzceo', display_name: 'bizdoc ceo', role: 'venture_ceo', venture: 'bizdoc', password: 'venture-only-strong-pass' } })).status, 200);
+  assert.equal((await admin.post('/api/users', { json: { username: 'bzceo', email: 'bzceo@example.test', display_name: 'bizdoc ceo', role: 'venture_ceo', venture: 'bizdoc', password: 'venture-only-strong-pass' } })).status, 200);
   const bz = await staff(app, 'bzceo', 'venture-only-strong-pass');
   assert.ok([401, 403].includes((await bz.post(`/api/admin/packages/${bn.id}/approve`, { json: {} })).status));
 });
@@ -561,7 +561,7 @@ test('finance desk, vat and terms', async () => {
   const app = await makeApp();
   const [client] = await start(app);
   const admin = await staff(app);
-  assert.equal((await admin.post('/api/users', { json: { username: 'finance', display_name: 'finance lead', role: 'finance', password: 'finance-strong-pass-1', phone: '+234 800 000 0000' } })).status, 200);
+  assert.equal((await admin.post('/api/users', { json: { username: 'finance', email: 'finance@example.test', display_name: 'finance lead', role: 'finance', password: 'finance-strong-pass-1', phone: '+234 800 000 0000' } })).status, 200);
   const fin = await staff(app, 'finance', 'finance-strong-pass-1');
   // finance sees money, not client work
   assert.equal((await fin.get('/api/admin/money')).status, 200); assert.equal((await fin.get('/api/admin/orders')).status, 200);
@@ -596,7 +596,7 @@ test('finance desk, vat and terms', async () => {
 test('venture follow-up loop', async () => {
   const app = await makeApp();
   const { client, admin, p, eng } = await paidJob(app);
-  assert.equal((await admin.post('/api/users', { json: { username: 'subtlead', display_name: 'subt lead', role: 'venture_ceo', venture: 'subt',
+  assert.equal((await admin.post('/api/users', { json: { username: 'subtlead', email: 'subtlead@example.test', display_name: 'subt lead', role: 'venture_ceo', venture: 'subt',
     password: 'venture-strong-pass-1', phone: '+234 803 222 3333' } })).status, 200);
   const uid = (await admin.get('/api/users')).json().find(u => u.username === 'subtlead').id;
   // assigning without a date sets one from the catalogue duration (7 days)
@@ -630,7 +630,7 @@ test('venture follow-up loop', async () => {
   const item = (await me(client)).recommendation.items[0];
   assert.equal(item.engagement.handover.accounts[0].account_email, 'ada@example.com');
   // another venture cannot see or touch it
-  await admin.post('/api/users', { json: { username: 'medlead', display_name: 'medialy lead', role: 'venture_ceo', venture: 'medialy', password: 'venture-strong-pass-2' } });
+  await admin.post('/api/users', { json: { username: 'medlead', email: 'medlead@example.test', display_name: 'medialy lead', role: 'venture_ceo', venture: 'medialy', password: 'venture-strong-pass-2' } });
   const m = await staff(app, 'medlead', 'venture-strong-pass-2');
   assert.deepEqual((await m.get('/api/admin/engagements')).json(), []);
   assert.equal((await m.put(`/api/admin/engagements/${eng.id}/handover`, { json: {} })).status, 403);

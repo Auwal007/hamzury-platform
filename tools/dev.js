@@ -22,6 +22,6 @@ http.createServer(async (req, res) => {
   res.writeHead(out.status, out.headers);
   res.end(out.body);
 }).listen(port, '127.0.0.1', () => {
-  console.log(`hamzury running at http://127.0.0.1:${port}  (desk: /admin, user ${app.cfg.ADMIN_USERNAME})`);
+  console.log(`hamzury running at http://127.0.0.1:${port}  (desk: /admin, email ${app.cfg.ADMIN_EMAIL || 'set HAMZURY_ADMIN_EMAIL first'})`);
   console.log(`database: ${db.kind === 'pglite' ? 'embedded (' + process.env.DATABASE_URL.replace('pglite:', '') + ')' : 'supabase'}, files: ${app.storage.kind === 'local' ? 'local folder' : 'cloudinary'}`);
 });
